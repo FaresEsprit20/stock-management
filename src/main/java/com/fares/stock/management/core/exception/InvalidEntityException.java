@@ -6,7 +6,6 @@ import java.util.List;
 
 public class InvalidEntityException extends RuntimeException {
 
-    @Getter
     private ErrorCodes errorCode;
     @Getter
     private List<String> errors;
@@ -33,6 +32,10 @@ public class InvalidEntityException extends RuntimeException {
         super(message);
         this.errorCode = errorCode;
         this.errors = errors;
+    }
+
+    public ErrorCodes getErrorCode() {
+        return errorCode;
     }
 
 }

@@ -19,11 +19,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CustomErrorMsg> handleException(EntityNotFoundException exception, WebRequest webRequest) {
 
         final HttpStatus notFound = HttpStatus.NOT_FOUND;
-        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
-                .code(exception.getErrorCode())
-                .httpCode(notFound.value())
-                .message(exception.getMessage())
-                .build();
+        final CustomErrorMsg errorDto = new CustomErrorMsg();
+                errorDto.setCode(exception.getErrorCode());
+                errorDto.setHttpCode(notFound.value());
+                errorDto.setMessage(exception.getMessage());
 
         return new ResponseEntity<>(errorDto, notFound);
     }
@@ -32,25 +31,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CustomErrorMsg> handleException(InvalidOperationException exception, WebRequest webRequest) {
 
         final HttpStatus notFound = HttpStatus.BAD_REQUEST;
-        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
-                .code(exception.getErrorCode())
-                .httpCode(notFound.value())
-                .message(exception.getMessage())
-                .build();
+        final CustomErrorMsg errorDto = new CustomErrorMsg();
+        errorDto.setCode(exception.getErrorCode());
+        errorDto.setHttpCode(notFound.value());
+        errorDto.setMessage(exception.getMessage());
 
         return new ResponseEntity<>(errorDto, notFound);
     }
 
     @ExceptionHandler(InvalidEntityException.class)
     public ResponseEntity<CustomErrorMsg> handleException(InvalidEntityException exception, WebRequest webRequest) {
+
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
-        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
-                .code(exception.getErrorCode())
-                .httpCode(badRequest.value())
-                .message(exception.getMessage())
-                .errors(exception.getErrors())
-                .build();
+        final CustomErrorMsg errorDto = new CustomErrorMsg();
+        errorDto.setCode(exception.getErrorCode());
+        errorDto.setHttpCode(badRequest.value());
+        errorDto.setMessage(exception.getMessage());
 
         return new ResponseEntity<>(errorDto, badRequest);
     }

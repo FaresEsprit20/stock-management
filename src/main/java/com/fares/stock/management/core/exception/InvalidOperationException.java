@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public class InvalidOperationException extends RuntimeException {
 
-    @Getter
+
     private ErrorCodes errorCode;
 
     public InvalidOperationException(String message) {
@@ -25,5 +25,8 @@ public class InvalidOperationException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+    public ErrorCodes getErrorCode() {
+        return errorCode;
+    }
 
 }

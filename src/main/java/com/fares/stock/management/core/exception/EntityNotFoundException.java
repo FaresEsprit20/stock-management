@@ -1,10 +1,10 @@
 package com.fares.stock.management.core.exception;
 
-import lombok.Getter;
+
 
 public class EntityNotFoundException extends RuntimeException {
 
-    @Getter
+
     private ErrorCodes errorCode;
 
     public EntityNotFoundException(String message) {
@@ -24,5 +24,10 @@ public class EntityNotFoundException extends RuntimeException {
         super(message);
         this.errorCode = errorCode;
     }
+
+    public ErrorCodes getErrorCode() {
+        return errorCode;
+    }
+
 
 }
