@@ -1,15 +1,17 @@
 package com.fares.stock.management.core.handlers;
 
 import com.fares.stock.management.core.exception.ErrorCodes;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Builder
 public class ErrorDto {
 
