@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface SaleLineRepository extends JpaRepository<SaleLine, Integer> {
 
-    List<SaleLine> findAllByArticleId(Integer idArticle);
+    List<SaleLine> findAllByProductId(Integer idProduct);
 
     List<SaleLine> findAllBySaleId(Integer id);
 }

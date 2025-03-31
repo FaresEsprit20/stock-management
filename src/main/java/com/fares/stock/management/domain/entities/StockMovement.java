@@ -27,7 +27,7 @@ public class StockMovement extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "article_id")
-    private Article article;
+    private Product product;
 
     @Column(name = "stock_mvt_type")
     @Enumerated(EnumType.STRING)

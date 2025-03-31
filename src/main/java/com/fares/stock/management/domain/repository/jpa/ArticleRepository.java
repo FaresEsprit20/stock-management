@@ -1,6 +1,6 @@
 package com.fares.stock.management.domain.repository.jpa;
 
-import com.fares.stock.management.domain.entities.Article;
+import com.fares.stock.management.domain.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, Integer> {
+public interface ArticleRepository extends JpaRepository<Product, Integer> {
 
-    Optional<Article> findArticleByCodeArticle(String codeArticle);
+    Optional<Product> findArticleByCodeProduct(String codeProduct);
 
-    List<Article> findAllByCategoryId(Integer idCategory);
+    List<Product> findAllByCategoryId(Integer idCategory);
 
 
 }

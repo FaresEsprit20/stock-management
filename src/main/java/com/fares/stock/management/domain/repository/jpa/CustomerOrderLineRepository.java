@@ -11,6 +11,6 @@ public interface CustomerOrderLineRepository extends JpaRepository<CustomerOrder
 
     List<CustomerOrderLine> findAllByCustomerOrderId(Integer id);
 
-    List<CustomerOrderLine> findAllByArticleId(Integer id);
+    List<CustomerOrderLine> findAllByProductId(Integer id);
 
 }

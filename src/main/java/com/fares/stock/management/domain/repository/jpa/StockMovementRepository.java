@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface StockMovementRepository extends JpaRepository<StockMovement, Integer> {
 
-    @Query("select sum(m.quantity) from StockMovement m where m.article.id = :idArticle")
-    BigDecimal stockReelArticle(@Param("idArticle") Integer idArticle);
+    @Query("select sum(m.quantity) from StockMovement m where m.product.id = :idProduct")
+    BigDecimal stockReelProduct(@Param("idProduct") Integer idArticle);
 
-    List<StockMovement> findAllByArticleId(Integer idArticle);
+    List<StockMovement> findAllByProductId(Integer idProduct);
 
 }

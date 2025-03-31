@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 public class SupplierOrderLine extends AbstractEntity {
 
     @ManyToOne
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "supplier_order_id")

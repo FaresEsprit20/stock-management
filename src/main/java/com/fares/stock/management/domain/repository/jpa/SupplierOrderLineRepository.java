@@ -11,6 +11,6 @@ public interface SupplierOrderLineRepository extends JpaRepository<SupplierOrder
 
     List<SupplierOrderLine> findAllBySupplierOrderId(Integer orderId);
 
-    List<SupplierOrderLine> findAllByArticleId(Integer orderId);
+    List<SupplierOrderLine> findAllByProductId(Integer orderId);
 
 }

@@ -14,11 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "article")
-public class Article extends AbstractEntity {
+@Table(name = "product")
+public class Product extends AbstractEntity {
 
     @Column(name = "code")
-    private String codeArticle;
+    private String codeProduct;
 
     @Column(name = "designation")
     private String designation;
@@ -42,16 +42,16 @@ public class Article extends AbstractEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "product")
     private List<SaleLine> saleLines;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "product")
     private List<CustomerOrderLine> customerOrderLines;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "product")
     private List<SupplierOrderLine> supplierOrderLines;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "product")
     private List<StockMovement> stockMovements;
 
 
