@@ -1,6 +1,7 @@
 package com.fares.stock.management.core.handlers;
 
 
+import com.fares.stock.management.core.exception.CustomErrorMsg;
 import com.fares.stock.management.core.exception.EntityNotFoundException;
 import com.fares.stock.management.core.exception.InvalidEntityException;
 import com.fares.stock.management.core.exception.InvalidOperationException;
@@ -15,10 +16,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDto> handleException(EntityNotFoundException exception, WebRequest webRequest) {
+    public ResponseEntity<CustomErrorMsg> handleException(EntityNotFoundException exception, WebRequest webRequest) {
 
         final HttpStatus notFound = HttpStatus.NOT_FOUND;
-        final ErrorDto errorDto = ErrorDto.builder()
+        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
                 .code(exception.getErrorCode())
                 .httpCode(notFound.value())
                 .message(exception.getMessage())
@@ -28,10 +29,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidOperationException.class)
-    public ResponseEntity<ErrorDto> handleException(InvalidOperationException exception, WebRequest webRequest) {
+    public ResponseEntity<CustomErrorMsg> handleException(InvalidOperationException exception, WebRequest webRequest) {
 
         final HttpStatus notFound = HttpStatus.BAD_REQUEST;
-        final ErrorDto errorDto = ErrorDto.builder()
+        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
                 .code(exception.getErrorCode())
                 .httpCode(notFound.value())
                 .message(exception.getMessage())
@@ -41,10 +42,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidEntityException.class)
-    public ResponseEntity<ErrorDto> handleException(InvalidEntityException exception, WebRequest webRequest) {
+    public ResponseEntity<CustomErrorMsg> handleException(InvalidEntityException exception, WebRequest webRequest) {
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
-        final ErrorDto errorDto = ErrorDto.builder()
+        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
                 .code(exception.getErrorCode())
                 .httpCode(badRequest.value())
                 .message(exception.getMessage())

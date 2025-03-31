@@ -1,19 +1,19 @@
-package com.fares.stock.management.core.handlers;
+package com.fares.stock.management.core.exception;
 
-import com.fares.stock.management.core.exception.ErrorCodes;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
-public class ErrorDto {
+public class CustomErrorMsg {
 
     private Integer httpCode;
 
