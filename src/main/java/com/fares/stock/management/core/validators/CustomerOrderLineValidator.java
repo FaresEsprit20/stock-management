@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.customer_order_line.CustomerOrderLineDto;
 
 import java.util.ArrayList;
@@ -33,18 +33,18 @@ public class CustomerOrderLineValidator {
         }
 
         // Quantity Validation
-        if (customerOrderLineDto.getQuantity() == null || customerOrderLineDto.getQuantity().compareTo(Constants.MIN_QUANTITY) < 0 ||
-                customerOrderLineDto.getQuantity().compareTo(Constants.MAX_QUANTITY) > 0) {
+        if (customerOrderLineDto.getQuantity() == null || customerOrderLineDto.getQuantity().compareTo(FieldsValidation.MIN_QUANTITY) < 0 ||
+                customerOrderLineDto.getQuantity().compareTo(FieldsValidation.MAX_QUANTITY) > 0) {
             errors.add("Quantity must be between 1 and 10000");
         }
 
         // Unit Price Validation
-        if (customerOrderLineDto.getUnitPrice() == null || customerOrderLineDto.getUnitPrice().compareTo(Constants.MIN_UNIT_PRICE) < 0) {
+        if (customerOrderLineDto.getUnitPrice() == null || customerOrderLineDto.getUnitPrice().compareTo(FieldsValidation.MIN_UNIT_PRICE) < 0) {
             errors.add("Unit Price cannot be negative");
         }
 
         // Company ID Validation
-        if (customerOrderLineDto.getCompanyId() == null || customerOrderLineDto.getCompanyId() < Constants.MIN_COMPANY_ID) {
+        if (customerOrderLineDto.getCompanyId() == null || customerOrderLineDto.getCompanyId() < FieldsValidation.MIN_COMPANY_ID) {
             errors.add("Company ID is invalid");
         }
         return errors;

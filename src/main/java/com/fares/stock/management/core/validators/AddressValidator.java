@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.address.AddressDto;
 import org.springframework.util.StringUtils;
 
@@ -25,12 +25,12 @@ public class AddressValidator {
         if (!StringUtils.hasLength(addressDto.getAddress1())) {
             errors.add("Address 1 field is required.");
         } else {
-            if (addressDto.getAddress1().length() < Constants.MIN_ADDRESS_LENGTH ||
-                    addressDto.getAddress1().length() > Constants.MAX_ADDRESS_LENGTH) {
-                errors.add("Address 1 must be between " + Constants.MIN_ADDRESS_LENGTH +
-                        " and " + Constants.MAX_ADDRESS_LENGTH + " characters.");
+            if (addressDto.getAddress1().length() < FieldsValidation.MIN_ADDRESS_LENGTH ||
+                    addressDto.getAddress1().length() > FieldsValidation.MAX_ADDRESS_LENGTH) {
+                errors.add("Address 1 must be between " + FieldsValidation.MIN_ADDRESS_LENGTH +
+                        " and " + FieldsValidation.MAX_ADDRESS_LENGTH + " characters.");
             }
-            if (!Pattern.matches(Constants.ADDRESS_CONTENT_REGEX, addressDto.getAddress1())) {
+            if (!Pattern.matches(FieldsValidation.ADDRESS_CONTENT_REGEX, addressDto.getAddress1())) {
                 errors.add("Address 1 contains invalid characters.");
             }
         }
@@ -39,12 +39,12 @@ public class AddressValidator {
         if (!StringUtils.hasLength(addressDto.getCity())) {
             errors.add("City field is required.");
         } else {
-            if (addressDto.getCity().length() < Constants.MIN_CITY_LENGTH ||
-                    addressDto.getCity().length() > Constants.MAX_CITY_LENGTH) {
-                errors.add("City must be between " + Constants.MIN_CITY_LENGTH +
-                        " and " + Constants.MAX_CITY_LENGTH + " characters.");
+            if (addressDto.getCity().length() < FieldsValidation.MIN_CITY_LENGTH ||
+                    addressDto.getCity().length() > FieldsValidation.MAX_CITY_LENGTH) {
+                errors.add("City must be between " + FieldsValidation.MIN_CITY_LENGTH +
+                        " and " + FieldsValidation.MAX_CITY_LENGTH + " characters.");
             }
-            if (!Pattern.matches(Constants.CITY_REGEX, addressDto.getCity())) {
+            if (!Pattern.matches(FieldsValidation.CITY_REGEX, addressDto.getCity())) {
                 errors.add("City contains invalid characters.");
             }
         }
@@ -53,12 +53,12 @@ public class AddressValidator {
         if (!StringUtils.hasLength(addressDto.getCountry())) {
             errors.add("Country field is required.");
         } else {
-            if (addressDto.getCountry().length() < Constants.MIN_COUNTRY_LENGTH ||
-                    addressDto.getCountry().length() > Constants.MAX_COUNTRY_LENGTH) {
-                errors.add("Country must be between " + Constants.MIN_COUNTRY_LENGTH +
-                        " and " + Constants.MAX_COUNTRY_LENGTH + " characters.");
+            if (addressDto.getCountry().length() < FieldsValidation.MIN_COUNTRY_LENGTH ||
+                    addressDto.getCountry().length() > FieldsValidation.MAX_COUNTRY_LENGTH) {
+                errors.add("Country must be between " + FieldsValidation.MIN_COUNTRY_LENGTH +
+                        " and " + FieldsValidation.MAX_COUNTRY_LENGTH + " characters.");
             }
-            if (!Pattern.matches(Constants.COUNTRY_REGEX, addressDto.getCountry())) {
+            if (!Pattern.matches(FieldsValidation.COUNTRY_REGEX, addressDto.getCountry())) {
                 errors.add("Country contains invalid characters.");
             }
         }
@@ -67,10 +67,10 @@ public class AddressValidator {
         if (!StringUtils.hasLength(addressDto.getZipCode())) {
             errors.add("Zip Code field is required.");
         } else {
-            if (addressDto.getZipCode().length() != Constants.MIN_ZIPCODE_LENGTH) {
-                errors.add("Zip Code must be exactly " + Constants.MIN_ZIPCODE_LENGTH + " digits.");
+            if (addressDto.getZipCode().length() != FieldsValidation.MIN_ZIPCODE_LENGTH) {
+                errors.add("Zip Code must be exactly " + FieldsValidation.MIN_ZIPCODE_LENGTH + " digits.");
             }
-            if (!Pattern.matches(Constants.ZIP_CODE_REGEX, addressDto.getZipCode())) {
+            if (!Pattern.matches(FieldsValidation.ZIP_CODE_REGEX, addressDto.getZipCode())) {
                 errors.add("Zip Code must contain only digits.");
             }
         }
