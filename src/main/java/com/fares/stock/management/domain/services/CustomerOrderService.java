@@ -19,7 +19,7 @@ public interface CustomerOrderService {
 
     CustomerOrderDto updateProduct(Integer orderId, Integer orderLineId, Integer newIdProduct);
 
-    // Delete article ==> delete LigneCommandeClient
+    // Delete product ==> delete CustomerOrderLine
     CustomerOrderDto deleteProduct(Integer orderId, Integer orderLineId);
 
     CustomerOrderDto findById(Integer id);
