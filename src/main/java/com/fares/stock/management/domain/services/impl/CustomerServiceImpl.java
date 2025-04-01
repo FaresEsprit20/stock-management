@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto save(CustomerDto customerDto) {
         List<String> errors = CustomerValidator.validate(customerDto);
         if (!errors.isEmpty()) {
-            log.error("Customer is not valid {}", customerDto);
+            log.error(" Customer is not valid {}", customerDto);
             throw new InvalidEntityException("Customer Is not valid", ErrorCodes.CLIENT_NOT_VALID, errors);
         }
 
@@ -75,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         List<CustomerOrder> customerOrders = customerOrderRepository.findAllByCustomerId(customerId);
         if (!customerOrders.isEmpty()) {
-            throw new InvalidOperationException("Impossible to delete a customer already used in customer orders ",
+            throw new InvalidOperationException(" Impossible to delete a customer already used in customer orders ",
                     ErrorCodes.CLIENT_ALREADY_IN_USE);
         }
         customerRepository.deleteById(customerId);
