@@ -67,4 +67,13 @@ public class Constants {
     public static final BigDecimal MIN_UNIT_PRICE = BigDecimal.ZERO;  // Unit price should not be negative
 
 
+    // Enterprise Validation
+    public static final int MIN_NAME_LENGTH = 2;  // Minimum length for the enterprise name
+    public static final int MAX_NAME_LENGTH = 100;  // Maximum length for the enterprise name
+    public static final int MIN_CODE_FISCAL_LENGTH = 5;  // Minimum length for the fiscal code
+    public static final int MAX_CODE_FISCAL_LENGTH = 20;  // Maximum length for the fiscal code
+    public static final int MAX_EMAIL_LENGTH = 100;  // Maximum length for the email
+    public static final int MAX_TEL_LENGTH = 8;  // Maximum length for the telephone number
+    public static final int MAX_WEBSITE_LENGTH = 500;  // Maximum length for the website
+
 }
