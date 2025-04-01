@@ -3,9 +3,10 @@ package com.fares.stock.management.domain.dto.address;
 import com.fares.stock.management.domain.entities.Address;
 
 public class AddressDto {
+
     private String address1;
     private String address2;
-    private String town;
+    private String city;
     private String zipCode;
     private String country;
 
@@ -14,10 +15,10 @@ public class AddressDto {
     }
 
     // All-args constructor
-    public AddressDto(String address1, String address2, String town, String zipCode, String country) {
+    public AddressDto(String address1, String address2, String city, String zipCode, String country) {
         this.address1 = address1;
         this.address2 = address2;
-        this.town = town;
+        this.city = city;
         this.zipCode = zipCode;
         this.country = country;
     }
@@ -31,8 +32,8 @@ public class AddressDto {
         return address2;
     }
 
-    public String getTown() {
-        return town;
+    public String getCity() {
+        return city;
     }
 
     public String getZipCode() {
@@ -52,8 +53,8 @@ public class AddressDto {
         this.address2 = address2;
     }
 
-    public void setTown(String town) {
-        this.town = town;
+    public void setTown(String city) {
+        this.city = city;
     }
 
     public void setZipCode(String zipCode) {
@@ -72,7 +73,7 @@ public class AddressDto {
         return new AddressDto(
                 address.getAddress1(),
                 address.getAddress2(),
-                address.getTown(),
+                address.getCity(),
                 address.getZipCode(),
                 address.getCountry()
         );
@@ -85,7 +86,7 @@ public class AddressDto {
         Address address = new Address();
         address.setAddress1(addressDto.getAddress1());
         address.setAddress2(addressDto.getAddress2());
-        address.setTown(addressDto.getTown());
+        address.setTown(addressDto.getCity());
         address.setZipCode(addressDto.getZipCode());
         address.setCountry(addressDto.getCountry());
         return address;

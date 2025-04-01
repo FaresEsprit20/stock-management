@@ -20,8 +20,8 @@ public class Address implements Serializable {
     @Column(name = "address2")
     private String address2;
 
-    @Column(name = "town")
-    private String town;
+    @Column(name = "city")
+    private String city;
 
     @Column(name = "zipcode")
     private String zipCode;
@@ -32,10 +32,10 @@ public class Address implements Serializable {
 
     public Address() {}
 
-    public Address(String address1, String address2, String town, String zipCode, String country) {
+    public Address(String address1, String address2, String city, String zipCode, String country) {
         this.address1 = address1;
         this.address2 = address2;
-        this.town = town;
+        this.city = city;
         this.zipCode = zipCode;
         this.country = country;
     }
@@ -56,12 +56,12 @@ public class Address implements Serializable {
         this.address2 = address2;
     }
 
-    public String getTown() {
-        return town;
+    public String getCity() {
+        return city;
     }
 
-    public void setTown(String town) {
-        this.town = town;
+    public void setTown(String city) {
+        this.city = city;
     }
 
     public String getZipCode() {
@@ -84,12 +84,12 @@ public class Address implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(address1, address.address1) && Objects.equals(address2, address.address2) && Objects.equals(town, address.town) && Objects.equals(zipCode, address.zipCode) && Objects.equals(country, address.country);
+        return Objects.equals(address1, address.address1) && Objects.equals(address2, address.address2) && Objects.equals(city, address.city) && Objects.equals(zipCode, address.zipCode) && Objects.equals(country, address.country);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address1, address2, town, zipCode, country);
+        return Objects.hash(address1, address2, city, zipCode, country);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Address implements Serializable {
         return "Address{" +
                 "address1='" + address1 + '\'' +
                 ", address2='" + address2 + '\'' +
-                ", town='" + town + '\'' +
+                ", city='" + city + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", country='" + country + '\'' +
                 '}';
