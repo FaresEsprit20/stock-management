@@ -34,6 +34,22 @@ public class Constants {
     public static final int MAX_DESIGNATION_LENGTH = 50;
     public static final String DESIGNATION_REGEX = "^[a-zA-ZÀ-ÿ\s-]+$";
 
+    // First Name Validation
+    public static final int MIN_FIRST_NAME_LENGTH = 2;
+    public static final int MAX_FIRST_NAME_LENGTH = 20;
+    public static final String FIRST_NAME_REGEX = "^[a-zA-ZÀ-ÿ\\s-]+$";
+
+    // Last Name Validation
+    public static final int MIN_LAST_NAME_LENGTH = 2;
+    public static final int MAX_LAST_NAME_LENGTH = 20;
+    public static final String LAST_NAME_REGEX = "^[a-zA-ZÀ-ÿ\\s-]+$";
+
+    // Email Validation
+    public static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
+    // Phone Number Validation
+    public static final String PHONE_NUMBER_REGEX = "^[0-9]{8}$";
+    // Assuming phone number should be 8 digits
 
 
 
