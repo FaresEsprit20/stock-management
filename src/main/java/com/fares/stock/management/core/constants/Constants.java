@@ -1,5 +1,7 @@
 package com.fares.stock.management.core.constants;
 
+import java.math.BigDecimal;
+
 public class Constants {
 
     // Address Validation
@@ -51,7 +53,18 @@ public class Constants {
     public static final String PHONE_NUMBER_REGEX = "^[0-9]{8}$";
     // Assuming phone number should be 8 digits
 
+    // Company ID Validation (Assume companyId must be a positive integer)
+    public static final int MIN_COMPANY_ID = 1;
 
+    // Order Lines Validation
+    public static final int MIN_ORDER_LINES = 1;  // At least one order line
+    public static final int MAX_ORDER_LINES = 100;  // A maximum of 100 order lines
+
+
+    // Customer Order Line Validation
+    public static final BigDecimal MIN_QUANTITY = BigDecimal.ONE;  // Minimum quantity should be at least 1
+    public static final BigDecimal MAX_QUANTITY = new BigDecimal(10000);  // Maximum quantity limit
+    public static final BigDecimal MIN_UNIT_PRICE = BigDecimal.ZERO;  // Unit price should not be negative
 
 
 }
