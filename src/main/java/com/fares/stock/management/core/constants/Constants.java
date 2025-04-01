@@ -76,4 +76,23 @@ public class Constants {
     public static final int MAX_TEL_LENGTH = 8;  // Maximum length for the telephone number
     public static final int MAX_WEBSITE_LENGTH = 500;  // Maximum length for the website
 
+
+    // AuthenticationRequest validation constraints
+    public static final int MIN_LOGIN_LENGTH = 5;
+    public static final int MAX_LOGIN_LENGTH = 50;
+    public static final int MIN_PASSWORD_LENGTH = 8;
+    public static final int MAX_PASSWORD_LENGTH = 100;
+
+    // Regex patterns for login and password
+    public static final String LOGIN_REGEX = "^[a-zA-Z0-9_-]{5,50}$"; // Alphanumeric, underscores, and hyphens
+    public static final String PASSWORD_REGEX
+            = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,100}$"; // At least one uppercase, one lowercase, one number, and one special character
+
+
+    // Photo URL pattern if applicable (you can adjust the regex based on your needs)
+    public static final String PHOTO_URL_REGEX = "^(https?://.*\\.(?:png|jpg|jpeg|gif))$";
+
+
+
 }
+

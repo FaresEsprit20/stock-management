@@ -3,8 +3,7 @@ package com.fares.stock.management.domain.dto.product;
 import com.fares.stock.management.domain.entities.Product;
 import com.fares.stock.management.domain.dto.category.CategoryDto;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class ProductDto {
 
@@ -134,4 +133,6 @@ public class ProductDto {
         product.setCategory(CategoryDto.toEntity(productDto.getCategory()));
         return product;
     }
+
+
 }
