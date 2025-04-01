@@ -1,59 +1,75 @@
 package com.fares.stock.management.core.validators;
 
 import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.domain.dto.product.ProductDto;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class ProductDtoValidator {
 
-    // Validate codeProduct
-    public static boolean validateCodeProduct(String codeProduct) {
-        if (codeProduct == null || codeProduct.isEmpty()) {
-            return false;
+    public static List<String> validate(ProductDto productDto) {
+        List<String> errors = new ArrayList<>();
+
+        if (productDto == null) {
+            errors.add("Code Product field is required");
+            errors.add("Designation field is required");
+            errors.add("Unit Price field is required");
+            errors.add("Amount TVA field is required");
+            errors.add("Unit Price TTC field is required");
+            errors.add("Photo URL field is required");
+            errors.add("ID Enterprise field is required");
+            return errors;
         }
-        return codeProduct.length() >= Constants.MIN_CODE_LENGTH
-                && codeProduct.length() <= Constants.MAX_CODE_LENGTH
-                && codeProduct.matches(Constants.CODE_REGEX);
-    }
 
-    // Validate designation
-    public static boolean validateDesignation(String designation) {
-        if (designation == null || designation.isEmpty()) {
-            return false;
+        // Code Product Validation
+        if (!StringUtils.hasLength(productDto.getCodeProduct()) ||
+                productDto.getCodeProduct().length() < Constants.MIN_CODE_LENGTH ||
+                productDto.getCodeProduct().length() > Constants.MAX_CODE_LENGTH ||
+                !Pattern.matches(Constants.CODE_REGEX, productDto.getCodeProduct())) {
+            errors.add("Code Product is invalid: it must be between " + Constants.MIN_CODE_LENGTH + " and " + Constants.MAX_CODE_LENGTH + " characters and match the regex " + Constants.CODE_REGEX);
         }
-        return designation.length() >= Constants.MIN_DESIGNATION_LENGTH
-                && designation.length() <= Constants.MAX_DESIGNATION_LENGTH;
-    }
 
-    // Validate unit price (should be greater than zero)
-    public static boolean validateUnitPrice(BigDecimal unitPrice) {
-        if (unitPrice == null) {
-            return false;
+        // Designation Validation
+        if (!StringUtils.hasLength(productDto.getDesignation()) ||
+                productDto.getDesignation().length() < Constants.MIN_DESIGNATION_LENGTH ||
+                productDto.getDesignation().length() > Constants.MAX_DESIGNATION_LENGTH) {
+            errors.add("Designation is invalid: it must be between " + Constants.MIN_DESIGNATION_LENGTH + " and " + Constants.MAX_DESIGNATION_LENGTH + " characters.");
         }
-        return unitPrice.compareTo(Constants.MIN_UNIT_PRICE) > 0;
-    }
 
-    // Validate amountTva (should be greater than or equal to zero)
-    public static boolean validateAmountTva(BigDecimal amountTva) {
-        return amountTva != null && amountTva.compareTo(BigDecimal.ZERO) >= 0;
-    }
-
-    // Validate unitPriceTtc (should be greater than or equal to unitPriceHt)
-    public static boolean validateUnitPriceTtc(BigDecimal unitPriceTtc, BigDecimal unitPriceHt) {
-        return unitPriceTtc != null && unitPriceTtc.compareTo(unitPriceHt) >= 0;
-    }
-
-    // Validate photo (if provided, it must match the URL regex)
-    public static boolean validatePhoto(String photo) {
-        if (photo == null || photo.isEmpty()) {
-            return true; // Optional field, skip validation if not provided
+        // Unit Price Validation (should be greater than zero)
+        if (productDto.getUnitPriceHt() == null || productDto.getUnitPriceHt().compareTo(Constants.MIN_UNIT_PRICE) <= 0) {
+            errors.add("Unit Price HT is invalid: it must be greater than zero.");
         }
-        return photo.matches(Constants.PHOTO_URL_REGEX);
+
+        // Amount TVA Validation (should be greater than or equal to zero)
+        if (productDto.getAmountTva() == null || productDto.getAmountTva().compareTo(BigDecimal.ZERO) < 0) {
+            errors.add("Amount TVA is invalid: it must be greater than or equal to zero.");
+        }
+
+        // Unit Price TTC Validation (should be greater than or equal to Unit Price HT)
+// Unit Price TTC Validation (should be greater than or equal to Unit Price HT)
+        if (productDto.getUnitPriceTtc() == null || productDto.getUnitPriceTtc().compareTo(productDto.getUnitPriceHt()) < 0) {
+            errors.add("Unit Price TTC is invalid: it must be greater than or equal to Unit Price HT.");
+        }
+
+        // Photo URL Validation (if provided)
+        if (StringUtils.hasLength(productDto.getPhoto()) && !Pattern.matches(Constants.PHOTO_URL_REGEX, productDto.getPhoto())) {
+            errors.add("Photo URL is invalid: it must match the valid URL format.");
+        }
+
+        // ID Enterprise Validation (not null)
+        if (productDto.getIdEnterprise() == null) {
+            errors.add("ID Enterprise is required.");
+        }
+
+        return errors;
     }
 
-    // Validate idEnterprise (not null)
-    public static boolean validateIdEnterprise(Integer idEnterprise) {
-        return idEnterprise != null;
-    }
-    
+
+
+
 }

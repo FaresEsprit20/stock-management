@@ -92,6 +92,13 @@ public class Constants {
     // Photo URL pattern if applicable (you can adjust the regex based on your needs)
     public static final String PHOTO_URL_REGEX = "^(https?://.*\\.(?:png|jpg|jpeg|gif))$";
 
+    // SaleLineDto validation constraints
+
+
+    // Regex for companyId (if needed)
+    public static final String COMPANY_ID_REGEX = "^[0-9]{1,10}$";
+    // Example regex for companyId, if needed.
+
 
 
 }
