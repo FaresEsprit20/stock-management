@@ -97,4 +97,6 @@ public class SupplierOrderLineDto {
         supplierOrderLine.setCompanyId(supplierOrderLineDto.getCompanyId());
         return supplierOrderLine;
     }
+
+
 }

@@ -1,11 +1,9 @@
 package com.fares.stock.management.domain.dto.supplier;
 
 
-import com.fares.stock.management.domain.dto.supplier_dto.SupplierOrderDto;
 import com.fares.stock.management.domain.entities.Address;
 import com.fares.stock.management.domain.entities.Supplier;
 
-import java.util.List;
 
 public class SupplierDto {
 
@@ -124,4 +122,6 @@ public class SupplierDto {
         supplier.setIdEnterprise(supplierDto.getIdEnterprise());
         return supplier;
     }
+
+
 }

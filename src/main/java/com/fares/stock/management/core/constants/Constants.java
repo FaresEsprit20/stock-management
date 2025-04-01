@@ -100,5 +100,12 @@ public class Constants {
     public static final int MIN_COMMENT_LENGTH = 5;  // Minimum length of a comment
     public static final int MAX_COMMENT_LENGTH = 500; // Maximum length of a comment
 
+    // Date must follow ISO8601 format (example: "2023-04-14T12:34:56.789Z")
+    public static final String DATE_REGEX = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$";
+
+
+
+
+
 }
 
