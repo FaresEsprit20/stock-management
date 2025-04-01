@@ -5,6 +5,7 @@ import com.fares.stock.management.domain.entities.Address;
 
 public class CustomerDto {
 
+    private Integer id;
     private String firstName;
     private String lastName;
     private Address address;
@@ -18,7 +19,8 @@ public class CustomerDto {
     }
 
     // All-args constructor
-    public CustomerDto(String firstName, String lastName, Address address, String photo, String email, String numTel, Integer idEnterprise) {
+    public CustomerDto(Integer id, String firstName, String lastName, Address address, String photo, String email, String numTel, Integer idEnterprise) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -26,6 +28,14 @@ public class CustomerDto {
         this.email = email;
         this.numTel = numTel;
         this.idEnterprise = idEnterprise;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     // Getters and Setters

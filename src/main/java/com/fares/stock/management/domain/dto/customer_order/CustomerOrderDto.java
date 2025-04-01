@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class CustomerOrderDto {
 
+    private Integer id;
     private String code;
     private Instant orderDate;
     private OrderStatus orderStatus;
@@ -28,6 +29,14 @@ public class CustomerOrderDto {
         this.companyId = companyId;
         this.customer = customer;
         this.orderLines = orderLines;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setCode(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -104,4 +113,10 @@ public class CustomerOrderDto {
         order.setCustomer(CustomerDto.toEntity(orderDto.getCustomer()));
         return order;
     }
+
+    public boolean isCommandeLivree() {
+        return OrderStatus.LIVREE.equals(this.orderStatus);
+    }
+
+
 }
