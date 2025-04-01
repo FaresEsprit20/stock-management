@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.user.UserDto;
 import com.fares.stock.management.domain.dto.enterprise.EnterpriseDto;
 import org.springframework.util.StringUtils;
@@ -27,25 +27,25 @@ public class UserValidator {
 
         // First Name Validation
         if (!StringUtils.hasLength(userDto.getFirstName()) ||
-                userDto.getFirstName().length() < Constants.MIN_FIRST_NAME_LENGTH ||
-                userDto.getFirstName().length() > Constants.MAX_FIRST_NAME_LENGTH ||
-                !Pattern.matches(Constants.FIRST_NAME_REGEX, userDto.getFirstName())) {
-            errors.add("First Name is invalid: it must be between " + Constants.MIN_FIRST_NAME_LENGTH + " and " + Constants.MAX_FIRST_NAME_LENGTH +
-                    " characters and match the pattern " + Constants.FIRST_NAME_REGEX);
+                userDto.getFirstName().length() < FieldsValidation.MIN_FIRST_NAME_LENGTH ||
+                userDto.getFirstName().length() > FieldsValidation.MAX_FIRST_NAME_LENGTH ||
+                !Pattern.matches(FieldsValidation.FIRST_NAME_REGEX, userDto.getFirstName())) {
+            errors.add("First Name is invalid: it must be between " + FieldsValidation.MIN_FIRST_NAME_LENGTH + " and " + FieldsValidation.MAX_FIRST_NAME_LENGTH +
+                    " characters and match the pattern " + FieldsValidation.FIRST_NAME_REGEX);
         }
 
         // Last Name Validation
         if (!StringUtils.hasLength(userDto.getLastName()) ||
-                userDto.getLastName().length() < Constants.MIN_LAST_NAME_LENGTH ||
-                userDto.getLastName().length() > Constants.MAX_LAST_NAME_LENGTH ||
-                !Pattern.matches(Constants.LAST_NAME_REGEX, userDto.getLastName())) {
-            errors.add("Last Name is invalid: it must be between " + Constants.MIN_LAST_NAME_LENGTH + " and " + Constants.MAX_LAST_NAME_LENGTH +
-                    " characters and match the pattern " + Constants.LAST_NAME_REGEX);
+                userDto.getLastName().length() < FieldsValidation.MIN_LAST_NAME_LENGTH ||
+                userDto.getLastName().length() > FieldsValidation.MAX_LAST_NAME_LENGTH ||
+                !Pattern.matches(FieldsValidation.LAST_NAME_REGEX, userDto.getLastName())) {
+            errors.add("Last Name is invalid: it must be between " + FieldsValidation.MIN_LAST_NAME_LENGTH + " and " + FieldsValidation.MAX_LAST_NAME_LENGTH +
+                    " characters and match the pattern " + FieldsValidation.LAST_NAME_REGEX);
         }
 
         // Email Validation
         if (!StringUtils.hasLength(userDto.getEmail()) ||
-                !Pattern.matches(Constants.EMAIL_REGEX, userDto.getEmail())) {
+                !Pattern.matches(FieldsValidation.EMAIL_REGEX, userDto.getEmail())) {
             errors.add("Email is invalid: it must be a valid email format.");
         }
 
@@ -56,16 +56,16 @@ public class UserValidator {
 
         // Password Validation
         if (!StringUtils.hasLength(userDto.getPassword()) ||
-                userDto.getPassword().length() < Constants.MIN_PASSWORD_LENGTH ||
-                userDto.getPassword().length() > Constants.MAX_PASSWORD_LENGTH ||
-                !Pattern.matches(Constants.PASSWORD_REGEX, userDto.getPassword())) {
-            errors.add("Password is invalid: it must be between " + Constants.MIN_PASSWORD_LENGTH + " and " + Constants.MAX_PASSWORD_LENGTH +
+                userDto.getPassword().length() < FieldsValidation.MIN_PASSWORD_LENGTH ||
+                userDto.getPassword().length() > FieldsValidation.MAX_PASSWORD_LENGTH ||
+                !Pattern.matches(FieldsValidation.PASSWORD_REGEX, userDto.getPassword())) {
+            errors.add("Password is invalid: it must be between " + FieldsValidation.MIN_PASSWORD_LENGTH + " and " + FieldsValidation.MAX_PASSWORD_LENGTH +
                     " characters and match the required complexity.");
         }
 
         // Photo Validation (if provided)
         if (StringUtils.hasLength(userDto.getPhoto()) &&
-                !Pattern.matches(Constants.PHOTO_URL_REGEX, userDto.getPhoto())) {
+                !Pattern.matches(FieldsValidation.PHOTO_URL_REGEX, userDto.getPhoto())) {
             errors.add("Photo URL is invalid: it must match the valid URL format.");
         }
 

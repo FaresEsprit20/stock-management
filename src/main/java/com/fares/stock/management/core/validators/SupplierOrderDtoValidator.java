@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.supplier_dto.SupplierOrderDto;
 import com.fares.stock.management.domain.dto.supplier.SupplierDto;
 import org.springframework.util.StringUtils;
@@ -26,11 +26,11 @@ public class SupplierOrderDtoValidator {
 
         // Code Validation
         if (!StringUtils.hasLength(supplierOrderDto.getCode()) ||
-                supplierOrderDto.getCode().length() < Constants.MIN_CODE_LENGTH ||
-                supplierOrderDto.getCode().length() > Constants.MAX_CODE_LENGTH ||
-                !Pattern.matches(Constants.CODE_REGEX, supplierOrderDto.getCode())) {
-            errors.add("Code is invalid: it must be between " + Constants.MIN_CODE_LENGTH + " and " +
-                    Constants.MAX_CODE_LENGTH + " characters and match the pattern " + Constants.CODE_REGEX);
+                supplierOrderDto.getCode().length() < FieldsValidation.MIN_CODE_LENGTH ||
+                supplierOrderDto.getCode().length() > FieldsValidation.MAX_CODE_LENGTH ||
+                !Pattern.matches(FieldsValidation.CODE_REGEX, supplierOrderDto.getCode())) {
+            errors.add("Code is invalid: it must be between " + FieldsValidation.MIN_CODE_LENGTH + " and " +
+                    FieldsValidation.MAX_CODE_LENGTH + " characters and match the pattern " + FieldsValidation.CODE_REGEX);
         }
 
         // Order Date Validation
@@ -64,5 +64,7 @@ public class SupplierOrderDtoValidator {
 
         return errors;
     }
+
+
 }
 

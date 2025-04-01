@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.product.ProductDto;
 import org.springframework.util.StringUtils;
 
@@ -27,21 +27,21 @@ public class ProductDtoValidator {
 
         // Code Product Validation
         if (!StringUtils.hasLength(productDto.getCodeProduct()) ||
-                productDto.getCodeProduct().length() < Constants.MIN_CODE_LENGTH ||
-                productDto.getCodeProduct().length() > Constants.MAX_CODE_LENGTH ||
-                !Pattern.matches(Constants.CODE_REGEX, productDto.getCodeProduct())) {
-            errors.add("Code Product is invalid: it must be between " + Constants.MIN_CODE_LENGTH + " and " + Constants.MAX_CODE_LENGTH + " characters and match the regex " + Constants.CODE_REGEX);
+                productDto.getCodeProduct().length() < FieldsValidation.MIN_CODE_LENGTH ||
+                productDto.getCodeProduct().length() > FieldsValidation.MAX_CODE_LENGTH ||
+                !Pattern.matches(FieldsValidation.CODE_REGEX, productDto.getCodeProduct())) {
+            errors.add("Code Product is invalid: it must be between " + FieldsValidation.MIN_CODE_LENGTH + " and " + FieldsValidation.MAX_CODE_LENGTH + " characters and match the regex " + FieldsValidation.CODE_REGEX);
         }
 
         // Designation Validation
         if (!StringUtils.hasLength(productDto.getDesignation()) ||
-                productDto.getDesignation().length() < Constants.MIN_DESIGNATION_LENGTH ||
-                productDto.getDesignation().length() > Constants.MAX_DESIGNATION_LENGTH) {
-            errors.add("Designation is invalid: it must be between " + Constants.MIN_DESIGNATION_LENGTH + " and " + Constants.MAX_DESIGNATION_LENGTH + " characters.");
+                productDto.getDesignation().length() < FieldsValidation.MIN_DESIGNATION_LENGTH ||
+                productDto.getDesignation().length() > FieldsValidation.MAX_DESIGNATION_LENGTH) {
+            errors.add("Designation is invalid: it must be between " + FieldsValidation.MIN_DESIGNATION_LENGTH + " and " + FieldsValidation.MAX_DESIGNATION_LENGTH + " characters.");
         }
 
         // Unit Price Validation (should be greater than zero)
-        if (productDto.getUnitPriceHt() == null || productDto.getUnitPriceHt().compareTo(Constants.MIN_UNIT_PRICE) <= 0) {
+        if (productDto.getUnitPriceHt() == null || productDto.getUnitPriceHt().compareTo(FieldsValidation.MIN_UNIT_PRICE) <= 0) {
             errors.add("Unit Price HT is invalid: it must be greater than zero.");
         }
 
@@ -57,7 +57,7 @@ public class ProductDtoValidator {
         }
 
         // Photo URL Validation (if provided)
-        if (StringUtils.hasLength(productDto.getPhoto()) && !Pattern.matches(Constants.PHOTO_URL_REGEX, productDto.getPhoto())) {
+        if (StringUtils.hasLength(productDto.getPhoto()) && !Pattern.matches(FieldsValidation.PHOTO_URL_REGEX, productDto.getPhoto())) {
             errors.add("Photo URL is invalid: it must match the valid URL format.");
         }
 

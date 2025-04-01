@@ -1,10 +1,7 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.stock_movement.StockMovementDto;
-import com.fares.stock.management.domain.dto.product.ProductDto;
-import com.fares.stock.management.domain.entities.enums.StockMvtType;
-import com.fares.stock.management.domain.entities.enums.StockMvtSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,7 @@ public class StockMovementDtoValidator {
             errors.add("Movement date is required.");
         } else {
             String dateString = dto.getMovementDate().toString();
-            if (!Pattern.matches(Constants.DATE_REGEX, dateString)) {
+            if (!Pattern.matches(FieldsValidation.DATE_REGEX, dateString)) {
                 errors.add("Movement date is invalid: it must follow ISO8601 format.");
             }
         }
@@ -33,9 +30,9 @@ public class StockMovementDtoValidator {
         // Validate quantity (must be between MIN_QUANTITY and MAX_QUANTITY)
         if (dto.getQuantity() == null) {
             errors.add("Quantity is required.");
-        } else if (dto.getQuantity().compareTo(Constants.MIN_QUANTITY) < 0 ||
-                dto.getQuantity().compareTo(Constants.MAX_QUANTITY) > 0) {
-            errors.add("Quantity must be between " + Constants.MIN_QUANTITY + " and " + Constants.MAX_QUANTITY + ".");
+        } else if (dto.getQuantity().compareTo(FieldsValidation.MIN_QUANTITY) < 0 ||
+                dto.getQuantity().compareTo(FieldsValidation.MAX_QUANTITY) > 0) {
+            errors.add("Quantity must be between " + FieldsValidation.MIN_QUANTITY + " and " + FieldsValidation.MAX_QUANTITY + ".");
         }
 
         // Validate companyId (should not be null and must be a positive number)

@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.supplier_order_line.SupplierOrderLineDto;
 
 import java.util.ArrayList;
@@ -33,16 +33,16 @@ public class SupplierOrderLineDtoValidator {
         // Validate Quantity (must be between MIN_QUANTITY and MAX_QUANTITY)
         if (dto.getQuantity() == null) {
             errors.add("Quantity is required.");
-        } else if (dto.getQuantity().compareTo(Constants.MIN_QUANTITY) < 0 ||
-                dto.getQuantity().compareTo(Constants.MAX_QUANTITY) > 0) {
-            errors.add("Quantity must be between " + Constants.MIN_QUANTITY + " and " + Constants.MAX_QUANTITY + ".");
+        } else if (dto.getQuantity().compareTo(FieldsValidation.MIN_QUANTITY) < 0 ||
+                dto.getQuantity().compareTo(FieldsValidation.MAX_QUANTITY) > 0) {
+            errors.add("Quantity must be between " + FieldsValidation.MIN_QUANTITY + " and " + FieldsValidation.MAX_QUANTITY + ".");
         }
 
         // Validate Unit Price (must be greater than or equal to MIN_UNIT_PRICE)
         if (dto.getUnitPrice() == null) {
             errors.add("Unit Price is required.");
-        } else if (dto.getUnitPrice().compareTo(Constants.MIN_UNIT_PRICE) < 0) {
-            errors.add("Unit Price must be greater than or equal to " + Constants.MIN_UNIT_PRICE + ".");
+        } else if (dto.getUnitPrice().compareTo(FieldsValidation.MIN_UNIT_PRICE) < 0) {
+            errors.add("Unit Price must be greater than or equal to " + FieldsValidation.MIN_UNIT_PRICE + ".");
         }
 
         // Validate Company ID (should not be null and must be a positive number)

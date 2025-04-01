@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.customer_order.CustomerOrderDto;
 import org.springframework.util.StringUtils;
 
@@ -25,9 +25,9 @@ public class CustomerOrderValidator {
 
         // Order Code Validation
         if (!StringUtils.hasLength(customerOrderDto.getCode()) ||
-                customerOrderDto.getCode().length() < Constants.MIN_CODE_LENGTH ||
-                customerOrderDto.getCode().length() > Constants.MAX_CODE_LENGTH ||
-                !Pattern.matches(Constants.CODE_REGEX, customerOrderDto.getCode())) {
+                customerOrderDto.getCode().length() < FieldsValidation.MIN_CODE_LENGTH ||
+                customerOrderDto.getCode().length() > FieldsValidation.MAX_CODE_LENGTH ||
+                !Pattern.matches(FieldsValidation.CODE_REGEX, customerOrderDto.getCode())) {
             errors.add("Order Code is invalid");
         }
 
@@ -37,7 +37,7 @@ public class CustomerOrderValidator {
         }
 
         // Company ID Validation
-        if (customerOrderDto.getCompanyId() == null || customerOrderDto.getCompanyId() < Constants.MIN_COMPANY_ID) {
+        if (customerOrderDto.getCompanyId() == null || customerOrderDto.getCompanyId() < FieldsValidation.MIN_COMPANY_ID) {
             errors.add("Company ID is invalid");
         }
 
@@ -49,12 +49,15 @@ public class CustomerOrderValidator {
         }
 
         // Order Lines Validation
-        if (customerOrderDto.getOrderLines() == null || customerOrderDto.getOrderLines().size() < Constants.MIN_ORDER_LINES ||
-                customerOrderDto.getOrderLines().size() > Constants.MAX_ORDER_LINES) {
+        if (customerOrderDto.getOrderLines() == null || customerOrderDto.getOrderLines().isEmpty() ||
+                customerOrderDto.getOrderLines().size() > FieldsValidation.MAX_ORDER_LINES) {
             errors.add("Order Lines must have between 1 and 100 items");
         }
 
         return errors;
     }
+
+
+
 }
 

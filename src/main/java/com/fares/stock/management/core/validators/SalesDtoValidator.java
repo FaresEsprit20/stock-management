@@ -1,7 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.sale_line.SaleLineDto;
 import com.fares.stock.management.domain.dto.sales.SalesDto;
 import org.springframework.util.StringUtils;
@@ -16,10 +15,10 @@ public class SalesDtoValidator {
     public static List<String> validateCode(String code) {
         List<String> errors = new ArrayList<>();
         if (!StringUtils.hasLength(code) ||
-                code.length() < Constants.MIN_CODE_LENGTH ||
-                code.length() > Constants.MAX_CODE_LENGTH ||
-                !code.matches(Constants.CODE_REGEX)) {
-            errors.add("Code is invalid: it must be between " + Constants.MIN_CODE_LENGTH + " and " + Constants.MAX_CODE_LENGTH + " characters and match the format " + Constants.CODE_REGEX);
+                code.length() < FieldsValidation.MIN_CODE_LENGTH ||
+                code.length() > FieldsValidation.MAX_CODE_LENGTH ||
+                !code.matches(FieldsValidation.CODE_REGEX)) {
+            errors.add("Code is invalid: it must be between " + FieldsValidation.MIN_CODE_LENGTH + " and " + FieldsValidation.MAX_CODE_LENGTH + " characters and match the format " + FieldsValidation.CODE_REGEX);
         }
         return errors;
     }
@@ -36,8 +35,8 @@ public class SalesDtoValidator {
     // Validate comment (optional, but if present, should meet length constraints)
     public static List<String> validateComment(String comment) {
         List<String> errors = new ArrayList<>();
-        if (comment != null && (comment.length() < Constants.MIN_COMMENT_LENGTH || comment.length() > Constants.MAX_COMMENT_LENGTH)) {
-            errors.add("Comment is invalid: it must be between " + Constants.MIN_COMMENT_LENGTH + " and " + Constants.MAX_COMMENT_LENGTH + " characters.");
+        if (comment != null && (comment.length() < FieldsValidation.MIN_COMMENT_LENGTH || comment.length() > FieldsValidation.MAX_COMMENT_LENGTH)) {
+            errors.add("Comment is invalid: it must be between " + FieldsValidation.MIN_COMMENT_LENGTH + " and " + FieldsValidation.MAX_COMMENT_LENGTH + " characters.");
         }
         return errors;
     }

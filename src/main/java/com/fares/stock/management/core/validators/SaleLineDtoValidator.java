@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.Constants;
+import com.fares.stock.management.core.constants.FieldsValidation;
 import com.fares.stock.management.domain.entities.Product;
 import com.fares.stock.management.domain.entities.Sales;
 
@@ -13,8 +13,8 @@ public class SaleLineDtoValidator {
     // Validate quantity (should be greater than or equal to zero)
     public static List<String> validateQuantity(BigDecimal quantity) {
         List<String> errors = new ArrayList<>();
-        if (quantity == null || quantity.compareTo(Constants.MIN_QUANTITY) < 0) {
-            errors.add("Quantity is invalid: it must be greater than or equal to " + Constants.MIN_QUANTITY);
+        if (quantity == null || quantity.compareTo(FieldsValidation.MIN_QUANTITY) < 0) {
+            errors.add("Quantity is invalid: it must be greater than or equal to " + FieldsValidation.MIN_QUANTITY);
         }
         return errors;
     }
@@ -22,8 +22,8 @@ public class SaleLineDtoValidator {
     // Validate unit price (should be greater than or equal to zero)
     public static List<String> validateUnitPrice(BigDecimal unitPrice) {
         List<String> errors = new ArrayList<>();
-        if (unitPrice == null || unitPrice.compareTo(Constants.MIN_UNIT_PRICE) < 0) {
-            errors.add("Unit Price is invalid: it must be greater than or equal to " + Constants.MIN_UNIT_PRICE);
+        if (unitPrice == null || unitPrice.compareTo(FieldsValidation.MIN_UNIT_PRICE) < 0) {
+            errors.add("Unit Price is invalid: it must be greater than or equal to " + FieldsValidation.MIN_UNIT_PRICE);
         }
         return errors;
     }
@@ -33,8 +33,8 @@ public class SaleLineDtoValidator {
         List<String> errors = new ArrayList<>();
         if (companyId == null) {
             errors.add("Company ID is required.");
-        } else if (!companyId.toString().matches(Constants.COMPANY_ID_REGEX)) {
-            errors.add("Company ID is invalid: it must match the format " + Constants.COMPANY_ID_REGEX);
+        } else if (!companyId.toString().matches(FieldsValidation.COMPANY_ID_REGEX)) {
+            errors.add("Company ID is invalid: it must match the format " + FieldsValidation.COMPANY_ID_REGEX);
         }
         return errors;
     }
