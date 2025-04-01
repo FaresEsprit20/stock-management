@@ -88,18 +88,17 @@ public class Constants {
     public static final String PASSWORD_REGEX
             = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,100}$"; // At least one uppercase, one lowercase, one number, and one special character
 
-
     // Photo URL pattern if applicable (you can adjust the regex based on your needs)
     public static final String PHOTO_URL_REGEX = "^(https?://.*\\.(?:png|jpg|jpeg|gif))$";
-
-    // SaleLineDto validation constraints
 
 
     // Regex for companyId (if needed)
     public static final String COMPANY_ID_REGEX = "^[0-9]{1,10}$";
     // Example regex for companyId, if needed.
 
-
+    // Comment Validation
+    public static final int MIN_COMMENT_LENGTH = 5;  // Minimum length of a comment
+    public static final int MAX_COMMENT_LENGTH = 500; // Maximum length of a comment
 
 }
 

@@ -5,34 +5,57 @@ import com.fares.stock.management.domain.entities.Product;
 import com.fares.stock.management.domain.entities.Sales;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaleLineDtoValidator {
 
     // Validate quantity (should be greater than or equal to zero)
-    public static boolean validateQuantity(BigDecimal quantity) {
-        return quantity != null && quantity.compareTo(Constants.MIN_QUANTITY) >= 0;
+    public static List<String> validateQuantity(BigDecimal quantity) {
+        List<String> errors = new ArrayList<>();
+        if (quantity == null || quantity.compareTo(Constants.MIN_QUANTITY) < 0) {
+            errors.add("Quantity is invalid: it must be greater than or equal to " + Constants.MIN_QUANTITY);
+        }
+        return errors;
     }
 
     // Validate unit price (should be greater than or equal to zero)
-    public static boolean validateUnitPrice(BigDecimal unitPrice) {
-        return unitPrice != null && unitPrice.compareTo(Constants.MIN_UNIT_PRICE) >= 0;
+    public static List<String> validateUnitPrice(BigDecimal unitPrice) {
+        List<String> errors = new ArrayList<>();
+        if (unitPrice == null || unitPrice.compareTo(Constants.MIN_UNIT_PRICE) < 0) {
+            errors.add("Unit Price is invalid: it must be greater than or equal to " + Constants.MIN_UNIT_PRICE);
+        }
+        return errors;
     }
 
     // Validate companyId (if provided, it must match the company ID regex)
-    public static boolean validateCompanyId(Integer companyId) {
+    public static List<String> validateCompanyId(Integer companyId) {
+        List<String> errors = new ArrayList<>();
         if (companyId == null) {
-            return false; // Company ID must be provided
+            errors.add("Company ID is required.");
+        } else if (!companyId.toString().matches(Constants.COMPANY_ID_REGEX)) {
+            errors.add("Company ID is invalid: it must match the format " + Constants.COMPANY_ID_REGEX);
         }
-        return companyId.toString().matches(Constants.COMPANY_ID_REGEX);
+        return errors;
     }
 
     // Validate sale (should not be null)
-    public static boolean validateSale(Sales sale) {
-        return sale != null;
+    public static List<String> validateSale(Sales sale) {
+        List<String> errors = new ArrayList<>();
+        if (sale == null) {
+            errors.add("Sale is required.");
+        }
+        return errors;
     }
 
     // Validate product (should not be null)
-    public static boolean validateProduct(Product product) {
-        return product != null;
+    public static List<String> validateProduct(Product product) {
+        List<String> errors = new ArrayList<>();
+        if (product == null) {
+            errors.add("Product is required.");
+        }
+        return errors;
     }
+
+
 }
