@@ -23,7 +23,19 @@ public class Constants {
     public static final String COUNTRY_REGEX = "^[a-zA-ZÀ-ÿ\\s]+$";
 
 
+    // Code Validation
+    public static final int MIN_CODE_LENGTH = 3;
+    public static final int MAX_CODE_LENGTH = 50;
+    public static final String CODE_REGEX = "^[a-zA-Z0-9-]+$";
+    // Only alphanumeric characters and dashes
+
+    // Designation Validation
+    public static final int MIN_DESIGNATION_LENGTH = 3;
+    public static final int MAX_DESIGNATION_LENGTH = 50;
+    public static final String DESIGNATION_REGEX = "^[a-zA-ZÀ-ÿ\s-]+$";
 
 
-    
+
+
+
 }

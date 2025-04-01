@@ -2,17 +2,14 @@ package com.fares.stock.management.domain.dto.category;
 
 
 import com.fares.stock.management.domain.entities.Category;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class CategoryDto {
+
     private String code;
     private String designation;
     private Integer idEnterprise;
 
-    // No-args constructor
-    public CategoryDto() {
-    }
 
     // All-args constructor
     public CategoryDto(String code, String designation, Integer idEnterprise) {
