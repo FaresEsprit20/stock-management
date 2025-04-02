@@ -5,13 +5,19 @@ import com.fares.stock.management.core.exception.ErrorCodes;
 import com.fares.stock.management.core.exception.InvalidEntityException;
 import com.fares.stock.management.core.exception.InvalidOperationException;
 import com.fares.stock.management.core.validators.CustomerOrderValidator;
+import com.fares.stock.management.core.validators.ProductDtoValidator;
+import com.fares.stock.management.domain.dto.customer.CustomerDto;
 import com.fares.stock.management.domain.dto.customer_order.CustomerOrderDto;
 import com.fares.stock.management.domain.dto.customer_order_line.CustomerOrderLineDto;
+import com.fares.stock.management.domain.dto.product.ProductDto;
+import com.fares.stock.management.domain.dto.stock_movement.StockMovementDto;
 import com.fares.stock.management.domain.entities.Customer;
 import com.fares.stock.management.domain.entities.CustomerOrder;
 import com.fares.stock.management.domain.entities.CustomerOrderLine;
 import com.fares.stock.management.domain.entities.Product;
 import com.fares.stock.management.domain.entities.enums.OrderStatus;
+import com.fares.stock.management.domain.entities.enums.StockMvtSource;
+import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.*;
 import com.fares.stock.management.domain.services.CustomerOrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +40,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     private final CustomerOrderLineRepository customerOrderLineRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
-    private final StockMovementRepository stockMovementRepository;
+    private final StockMovementService stockMovementService;
 
     @Autowired
     public CustomerOrderServiceImpl(CustomerOrderRepository customerOrderRepository, CustomerOrderLineRepository customerOrderLineRepository, CustomerRepository customerRepository, ProductRepository productRepository, StockMovementRepository stockMovementRepository) {
@@ -42,7 +48,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         this.customerOrderLineRepository = customerOrderLineRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
-        this.stockMovementRepository = stockMovementRepository;
+        this.stockMovementService = stockMovementService;
     }
 
 
@@ -160,13 +166,13 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public CustomerOrderDto updateOrderStatus(Integer orderId, OrderStatus orderStatus) {
-        checkIdCommande(orderId);
+        checkOrderId(orderId);
         if (!StringUtils.hasLength(String.valueOf(orderStatus))) {
             log.error("The customer's order status is NULL");
             throw new InvalidOperationException("Impossible to modify the state of the customer with a null state ",
                     ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
-        CustomerOrderDto customerOrderDto = checkEtatCommande(orderId);
+        CustomerOrderDto customerOrderDto = checkOrderState(orderId);
         customerOrderDto.setOrderStatus(orderStatus);
 
         CustomerOrder savedCmdClt = customerOrderRepository.save(CustomerOrderDto.toEntity(customerOrderDto));
@@ -179,8 +185,8 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Override
     public CustomerOrderDto updateOrderQuantity(Integer orderId, Integer orderLineId, BigDecimal quantity) {
-        checkIdCommande(orderId);
-        checkIdLigneCommande(orderLineId);
+        checkOrderId(orderId);
+        checkOrderLineId(orderLineId);
 
         if (quantity == null || quantity.compareTo(BigDecimal.ZERO) == 0) {
             log.error("The ID of order line is NULL");
@@ -188,8 +194,8 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
                     ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
 
-        CustomerOrderDto customerOrderDto = checkEtatCommande(orderId);
-        Optional<CustomerOrderLine> customerOrderLineOptional = findLigneCommandeClient(orderLineId);
+        CustomerOrderDto customerOrderDto = checkOrderState(orderId);
+        Optional<CustomerOrderLine> customerOrderLineOptional = findCustomerOrderLine(orderLineId);
 
         if(customerOrderLineOptional.isEmpty()) {
             log.error("The customer Order Line is NULL");
@@ -204,124 +210,130 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     }
 
     @Override
-    public CommandeClientDto updateClient(Integer idCommande, Integer idClient) {
-        checkIdCommande(idCommande);
-        if (idClient == null) {
-            log.error("L'ID du client is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un ID client null",
-                    ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+    public CustomerOrderDto updateCustomerOrderDto(Integer orderId, Integer customerId) {
+        checkOrderId(customerId);
+        if (customerId == null) {
+            log.error("The id of the customer is NULL");
+            throw new InvalidOperationException("Impossible dto modify the state of the order with a Null customer ID ",
+                    ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
-        CommandeClientDto commandeClient = checkEtatCommande(idCommande);
-        Optional<Client> clientOptional = clientRepository.findById(idClient);
-        if (clientOptional.isEmpty()) {
+        CustomerOrderDto customerOrderDto = checkOrderState(orderId);
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+        if (customerOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Aucun client n'a ete trouve avec l'ID " + idClient, ErrorCodes.CLIENT_NOT_FOUND);
+                    "No customer has been found with the ID " + customerId, ErrorCodes.CLIENT_NOT_FOUND);
         }
-        commandeClient.setClient(ClientDto.fromEntity(clientOptional.get()));
+        customerOrderDto.setCustomer(CustomerDto.fromEntity(customerOptional.get()));
 
-        return CommandeClientDto.fromEntity(
-                commandeClientRepository.save(CommandeClientDto.toEntity(commandeClient))
+        return CustomerOrderDto.fromEntity(
+                customerOrderRepository.save(CustomerOrderDto.toEntity(customerOrderDto))
         );
     }
 
     @Override
-    public CommandeClientDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle) {
-        checkIdCommande(idCommande);
-        checkIdLigneCommande(idLigneCommande);
-        checkIdArticle(idArticle, "nouvel");
+    public CustomerOrderDto updateProduct(Integer orderId, Integer orderLineId, Integer productId) {
+        checkOrderId(orderId);
+        checkOrderLineId(orderLineId);
+        checkProductId(productId, "nouvel");
 
-        CommandeClientDto commandeClient = checkEtatCommande(idCommande);
+        CustomerOrderDto customerOrderDto = checkOrderState(orderId);
 
-        Optional<LigneCommandeClient> ligneCommandeClient = findLigneCommandeClient(idLigneCommande);
+        Optional<CustomerOrderLine> customerOrderLine = findCustomerOrderLine(orderLineId);
 
-        Optional<Article> articleOptional = articleRepository.findById(idArticle);
-        if (articleOptional.isEmpty()) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Aucune article n'a ete trouve avec l'ID " + idArticle, ErrorCodes.ARTICLE_NOT_FOUND);
+                    "No product ID has been found with the ID " + productId, ErrorCodes.ARTICLE_NOT_FOUND);
         }
 
-        List<String> errors = ArticleValidator.validate(ArticleDto.fromEntity(articleOptional.get()));
+        List<String> errors = ProductDtoValidator.validate(ProductDto.fromEntity(productOptional.get()));
+
         if (!errors.isEmpty()) {
             throw new InvalidEntityException("Article invalid", ErrorCodes.ARTICLE_NOT_VALID, errors);
         }
 
-        LigneCommandeClient ligneCommandeClientToSaved = ligneCommandeClient.get();
-        ligneCommandeClientToSaved.setArticle(articleOptional.get());
-        ligneCommandeClientRepository.save(ligneCommandeClientToSaved);
+        if (customerOrderLine.isEmpty()) {
+            throw new EntityNotFoundException(
+                    "Order line is null , could not complete  ID " + orderLineId, ErrorCodes.ARTICLE_NOT_FOUND);
+        }
 
-        return commandeClient;
+        CustomerOrderLine customerOrderLineSaved = customerOrderLine.get();
+        customerOrderLineSaved.setProduct(productOptional.get());
+        customerOrderLineRepository.save(customerOrderLineSaved);
+
+        return customerOrderDto;
     }
 
     @Override
-    public CommandeClientDto deleteArticle(Integer idCommande, Integer idLigneCommande) {
-        checkIdCommande(idCommande);
-        checkIdLigneCommande(idLigneCommande);
+    public CustomerOrderDto deleteCustomerOrderDto(Integer orderId, Integer orderLineId) {
+        checkOrderId(orderId);
+        checkOrderLineId(orderLineId);
 
-        CommandeClientDto commandeClient = checkEtatCommande(idCommande);
+        CustomerOrderDto customerOrderDto = checkOrderState(orderId);
         // Just to check the LigneCommandeClient and inform the client in case it is absent
-        findLigneCommandeClient(idLigneCommande);
-        ligneCommandeClientRepository.deleteById(idLigneCommande);
+        findCustomerOrderLine(orderLineId);
+        customerOrderLineRepository.deleteById(orderLineId);
 
-        return commandeClient;
+        return customerOrderDto;
     }
 
-    private CommandeClientDto checkEtatCommande(Integer idCommande) {
-        CommandeClientDto commandeClient = findById(idCommande);
-        if (commandeClient.isCommandeLivree()) {
-            throw new InvalidOperationException("Impossible de modifier la commande lorsqu'elle est livree", ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+    private CustomerOrderDto checkOrderState(Integer orderId) {
+        CustomerOrderDto customerOrderDto = findById(orderId);
+        if (customerOrderDto.isCommandeLivree()) {
+            throw new InvalidOperationException("Impossible to modify the Order State when it's delivered ", ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
-        return commandeClient;
+        return customerOrderDto;
     }
 
-    private Optional<LigneCommandeClient> findLigneCommandeClient(Integer idLigneCommande) {
-        Optional<LigneCommandeClient> ligneCommandeClientOptional = ligneCommandeClientRepository.findById(idLigneCommande);
+    private Optional<CustomerOrderLine> findCustomerOrderLine(Integer customerOrderLineId) {
+        Optional<CustomerOrderLine> ligneCommandeClientOptional = customerOrderLineRepository.findById(customerOrderLineId);
         if (ligneCommandeClientOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Aucune ligne commande client n'a ete trouve avec l'ID " + idLigneCommande, ErrorCodes.COMMANDE_CLIENT_NOT_FOUND);
+                    "No Customer Order Line has been found with the ID " + customerOrderLineId, ErrorCodes.CUSTOMER_ORDER_LINE_NOT_FOUND);
         }
         return ligneCommandeClientOptional;
     }
 
-    private void checkIdCommande(Integer idCommande) {
-        if (idCommande == null) {
-            log.error("Commande client ID is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un ID null",
-                    ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+    private void checkOrderId(Integer orderId) {
+        if (orderId == null) {
+            log.error("Customer Order ID is NULL");
+            throw new InvalidOperationException("Impossible de modify the sate of the Order Id with a null",
+                    ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
     }
 
-    private void checkIdLigneCommande(Integer idLigneCommande) {
-        if (idLigneCommande == null) {
-            log.error("L'ID de la ligne commande is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec une ligne de commande null",
-                    ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+    private void checkOrderLineId(Integer orderLineId) {
+        if (orderLineId == null) {
+            log.error("the ID of the order line is NULL");
+            throw new InvalidOperationException("Impossible de modify the state of the order with an order line that is null",
+                    ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
     }
 
-    private void checkIdArticle(Integer idArticle, String msg) {
-        if (idArticle == null) {
-            log.error("L'ID de " + msg + " is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un " + msg + " ID article null",
-                    ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+    private void checkProductId(Integer productId, String msg) {
+        if (productId == null) {
+            log.error("The ID of " + msg + " is NULL");
+            throw new InvalidOperationException("Impossible to modify the state of the order with an " + msg + " null product ID",
+                    ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
     }
 
-    private void updateMvtStk(Integer idCommande) {
-        List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(idCommande);
-        ligneCommandeClients.forEach(lig -> {
+    private void updateMvtStk(Integer orderId) {
+        List<CustomerOrderLine> customerOrderLines = customerOrderLineRepository.findAllByCustomerOrderId(orderId);
+        customerOrderLines.forEach(lig -> {
             effectuerSortie(lig);
         });
     }
 
-    private void effectuerSortie(LigneCommandeClient lig) {
-        MvtStkDto mvtStkDto = MvtStkDto.builder()
-                .article(ArticleDto.fromEntity(lig.getArticle()))
-                .dateMvt(Instant.now())
-                .typeMvt(TypeMvtStk.SORTIE)
-                .sourceMvt(SourceMvtStk.COMMANDE_CLIENT)
-                .quantite(lig.getQuantite())
-                .idEntreprise(lig.getIdEntreprise())
-                .build();
-        mvtStkService.sortieStock(mvtStkDto);
+    private void effectuerSortie(CustomerOrderLine lig) {
+        StockMovementDto mvtStkDto = new StockMovementDto();
+        mvtStkDto.setProduct(ProductDto.fromEntity(lig.getProduct()));
+        mvtStkDto.setMovementDate(Instant.now());
+        mvtStkDto.setStockMvtType(StockMvtType.OUT);
+        mvtStkDto.setMovementSource(StockMvtSource.CLIENT_COMMAND);
+        mvtStkDto.setQuantity(lig.getQuantity());
+        mvtStkDto.setCompanyId(lig.getCompanyId());
+
+        stockMovementService.sortieStock(mvtStkDto);
     }
 }
