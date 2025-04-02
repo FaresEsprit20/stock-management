@@ -13,7 +13,8 @@ import com.fares.stock.management.domain.repository.jpa.RolesRepository;
 import com.fares.stock.management.domain.services.EnterpriseService;
 import com.fares.stock.management.domain.services.UserService;
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
 
 @Transactional(rollbackOn = Exception.class)
 @Service
-@Slf4j
 public class EnterpriseServiceImpl implements EnterpriseService {
 
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
     private final EnterpriseRepository enterpriseRepository;
     private final UserService userService;
     private final RolesRepository rolesRepository;
