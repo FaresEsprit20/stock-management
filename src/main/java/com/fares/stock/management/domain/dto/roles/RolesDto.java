@@ -1,19 +1,19 @@
 package com.fares.stock.management.domain.dto.roles;
 
+import com.fares.stock.management.domain.dto.user.UserDto;
 import com.fares.stock.management.domain.entities.Roles;
-import com.fares.stock.management.domain.entities.User;
 
 public class RolesDto {
 
     private String roleName;
-    private User user;
+    private UserDto user;
 
     // No-args constructor
     public RolesDto() {
     }
 
     // All-args constructor
-    public RolesDto(String roleName, User user) {
+    public RolesDto(String roleName, UserDto user) {
         this.roleName = roleName;
         this.user = user;
     }
@@ -23,7 +23,7 @@ public class RolesDto {
         return roleName;
     }
 
-    public User getUser() {
+    public UserDto getUser() {
         return user;
     }
 
@@ -32,7 +32,7 @@ public class RolesDto {
         this.roleName = roleName;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDto user) {
         this.user = user;
     }
 
@@ -43,7 +43,7 @@ public class RolesDto {
         }
         return new RolesDto(
                 roles.getRoleName(),
-                roles.getUser()
+                UserDto.fromEntity(roles.getUser())
         );
     }
 
@@ -53,7 +53,7 @@ public class RolesDto {
         }
         Roles roles = new Roles();
         roles.setRoleName(rolesDto.getRoleName());
-        roles.setUser(rolesDto.getUser());
+        roles.setUser(UserDto.toEntity(rolesDto.getUser()) );
         return roles;
     }
 }

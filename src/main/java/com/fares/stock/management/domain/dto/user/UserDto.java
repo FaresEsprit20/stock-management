@@ -1,5 +1,6 @@
 package com.fares.stock.management.domain.dto.user;
 
+import com.fares.stock.management.domain.dto.address.AddressDto;
 import com.fares.stock.management.domain.dto.enterprise.EnterpriseDto;
 import com.fares.stock.management.domain.dto.roles.RolesDto;
 import com.fares.stock.management.domain.entities.User;
@@ -18,6 +19,7 @@ public class UserDto {
     private String photo;
     private EnterpriseDto enterprise;
     private List<RolesDto> roles;
+    private AddressDto address;
 
     // No-args constructor
     public UserDto() {
@@ -25,7 +27,7 @@ public class UserDto {
 
     // All-args constructor
     public UserDto(String firstName, String lastName, String email, Instant birthDate,
-                   String password, String photo, EnterpriseDto enterprise, List<RolesDto> roles) {
+                   String password, String photo, EnterpriseDto enterprise, List<RolesDto> roles, AddressDto address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -34,6 +36,7 @@ public class UserDto {
         this.photo = photo;
         this.enterprise = enterprise;
         this.roles = roles;
+        this.address = address;
     }
 
     // Getters and Setters
@@ -101,6 +104,13 @@ public class UserDto {
         this.roles = roles;
     }
 
+    public AddressDto getAddress() {
+        return address;
+    }
+    public void setAddress(AddressDto address) {
+        this.address = address;
+    }
+
     // Static conversion methods
     public static UserDto fromEntity(User user) {
         if (user == null) {
@@ -116,7 +126,8 @@ public class UserDto {
                 EnterpriseDto.fromEntity(user.getEnterprise()),
                 user.getRoles().stream()
                         .map(RolesDto::fromEntity)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                AddressDto.fromEntity(user.getAddress())
         );
     }
 
@@ -132,6 +143,7 @@ public class UserDto {
         user.setPassword(userDto.getPassword());
         user.setPhoto(userDto.getPhoto());
         user.setEnterprise(EnterpriseDto.toEntity(userDto.getEnterprise()));
+        user.setAddress(AddressDto.toEntity(userDto.getAddress()));
         user.setRoles(userDto.getRoles().stream()
                 .map(RolesDto::toEntity)
                 .collect(Collectors.toList()));
