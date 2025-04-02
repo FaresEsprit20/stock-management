@@ -166,13 +166,13 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
     @Override
     public SupplierOrderDto updateOrderDto(Integer orderId, OrderStatus orderStatus) {
-        checkIdCommande(orderId);
+        checkOrderId(orderId);
         if (!StringUtils.hasLength(String.valueOf(orderStatus))) {
             log.error("The order status is NULL");
             throw new InvalidOperationException("Impossible to modify the status of the order with a null status ",
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
-        SupplierOrderDto supplierOrderDto = checkEtatCommande(orderId);
+        SupplierOrderDto supplierOrderDto = checkOrderStatus(orderId);
         supplierOrderDto.setOrderStatus(orderStatus);
 
        SupplierOrder savedSupplierOrder = supplierOrderRepository.save(SupplierOrderDto.toEntity(supplierOrderDto));
@@ -184,8 +184,8 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
     @Override
     public SupplierOrderDto updateOrderQuantity(Integer orderId, Integer orderLineId, BigDecimal quantity) {
-        checkIdCommande(orderId);
-        checkIdLigneCommande(orderLineId);
+        checkOrderId(orderId);
+        checkIdOrderLine(orderLineId);
 
         if (quantity == null || quantity.compareTo(BigDecimal.ZERO) == 0) {
             log.error("The ID of the order line is NULL");
@@ -193,7 +193,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
 
-        SupplierOrderDto supplierOrderDto = checkEtatCommande(orderId);
+        SupplierOrderDto supplierOrderDto = checkOrderStatus(orderId);
         Optional<SupplierOrderLine> ligneCommandeFournisseurOptional = findSupplierOrderLine(orderLineId);
 
         if(ligneCommandeFournisseurOptional.isEmpty()){
@@ -211,13 +211,13 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
     @Override
     public SupplierOrderDto updateSupplier(Integer orderId, Integer supplierId) {
-        checkIdCommande(orderId);
+        checkOrderId(orderId);
         if (supplierId == null) {
             log.error("the ID of the supplier is NULL");
             throw new InvalidOperationException("Impossible to modify the status of the order with a nul supplier IDl",
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
-        SupplierOrderDto supplierOrderDto = checkEtatCommande(orderId);
+        SupplierOrderDto supplierOrderDto = checkOrderStatus(orderId);
         Optional<Supplier> fournisseurOptional = supplierRepository.findById(supplierId);
         if (fournisseurOptional.isEmpty()) {
             throw new EntityNotFoundException(
@@ -232,11 +232,11 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
     @Override
     public SupplierOrderDto updateArticle(Integer orderId, Integer orderLineId, Integer productId) {
-        checkIdCommande(orderId);
-        checkIdLigneCommande(orderLineId);
+        checkOrderId(orderId);
+        checkIdOrderLine(orderLineId);
         checkIdArticle(productId, "nouvel");
 
-        SupplierOrderDto commandeFournisseur = checkEtatCommande(orderId);
+        SupplierOrderDto commandeFournisseur = checkOrderStatus(orderId);
 
         Optional<SupplierOrderLine> ligneCommandeFournisseur = findSupplierOrderLine(orderLineId);
 
@@ -264,11 +264,11 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
     @Override
     public SupplierOrderDto deleteArticle(Integer orderId, Integer orderLineId) {
-        checkIdCommande(orderId);
-        checkIdLigneCommande(orderLineId);
+        checkOrderId(orderId);
+        checkIdOrderLine(orderLineId);
 
-        SupplierOrderDto supplierOrderDto = checkEtatCommande(orderId);
-        // Just to check the SupplierOrderLine and inform the fournisseur in case it is absent
+        SupplierOrderDto supplierOrderDto = checkOrderStatus(orderId);
+        // Just to check the SupplierOrderLine and inform the supplier in case it is absent
         findSupplierOrderLine(orderLineId);
         supplierOrderLineRepository.deleteById(orderLineId);
 
@@ -278,7 +278,8 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     private SupplierOrderDto checkOrderStatus(Integer orderId) {
         SupplierOrderDto supplierOrderDto = findById(orderId);
         if (supplierOrderDto.isCommandeLivree()) {
-            throw new InvalidOperationException("Impossible de modify the order when it's already delivered", ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
+            throw new InvalidOperationException("Impossible de modify the order when it's already delivered",
+                    ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
         return supplierOrderDto;
     }
@@ -337,7 +338,6 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
         mvtStkDto.setCompanyId(lig.getCompanyId());
         stockMovementService.entreeStock(mvtStkDto);
     }
-
 
 
 }
