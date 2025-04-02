@@ -41,14 +41,14 @@ public class EnterpriseServiceImpl implements EnterpriseService {
 
 
     @Override
-    public EnterpriseDto save(EnterpriseDto dto) {
-        List<String> errors = EnterpriseValidator.validate(dto);
+    public EnterpriseDto save(EnterpriseDto enterpriseDto) {
+        List<String> errors = EnterpriseValidator.validate(enterpriseDto);
         if (!errors.isEmpty()) {
-            log.error("Enterprise is not valid {}", dto);
+            log.error("Enterprise is not valid {}", enterpriseDto);
             throw new InvalidEntityException("The enterprise is not valid", ErrorCodes.ENTERPRISE_NOT_VALID, errors);
         }
         EnterpriseDto savedEnterprise = EnterpriseDto.fromEntity(
-                enterpriseRepository.save(EnterpriseDto.toEntity(dto))
+                enterpriseRepository.save(EnterpriseDto.toEntity(enterpriseDto))
         );
 
         UserDto user = fromEnterprise(savedEnterprise);
@@ -107,7 +107,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public void delete(Integer id) {
         if (id == null) {
-            log.error("Entreprise ID is null");
+            log.error("Enterprise ID is null");
             return;
         }
         enterpriseRepository.deleteById(id);
