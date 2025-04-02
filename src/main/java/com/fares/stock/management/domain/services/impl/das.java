@@ -267,7 +267,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     }
 
     @Override
-    public SupplierOrderDto deleteProduct(Integer orderId, Integer orderLineId) {
+    public SupplierOrderDto deleteSupplierOrderLine(Integer orderId, Integer orderLineId) {
         checkOrderId(orderId);
         checkIdOrderLine(orderLineId);
 

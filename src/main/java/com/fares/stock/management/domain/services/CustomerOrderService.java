@@ -15,12 +15,12 @@ public interface CustomerOrderService {
 
     CustomerOrderDto updateOrderQuantity(Integer orderId, Integer orderLineId, BigDecimal quantity);
 
-    CustomerOrderDto updateClient(Integer orderId, Integer idClient);
+    CustomerOrderDto updateCustomer(Integer orderId, Integer idClient);
 
     CustomerOrderDto updateProduct(Integer orderId, Integer orderLineId, Integer newIdProduct);
 
     // Delete product ==> delete CustomerOrderLine
-    CustomerOrderDto deleteProduct(Integer orderId, Integer orderLineId);
+    CustomerOrderDto deleteCustomerOrderLine(Integer orderId, Integer orderLineId);
 
     CustomerOrderDto findById(Integer id);
 
@@ -28,7 +28,7 @@ public interface CustomerOrderService {
 
     List<CustomerOrderDto> findAll();
 
-    List<CustomerOrderLineDto> findAllCustomerOrderLinetByCustomerOrderId(Integer idCommande);
+    List<CustomerOrderLineDto> findAllCustomerOrderLinesByCustomerOrderId(Integer idCommande);
 
     void delete(Integer id);
 

@@ -20,7 +20,7 @@ public interface SupplierOrderService {
     SupplierOrderDto updateProduct(Integer orderId, Integer orderLineId, Integer productId);
 
     // Delete product ==> delete SupplierOrderLine
-    SupplierOrderDto deleteProduct(Integer orderId, Integer orderLineId);
+    SupplierOrderDto deleteSupplierOrderLine(Integer orderId, Integer orderLineId);
 
     SupplierOrderDto findById(Integer id);
 

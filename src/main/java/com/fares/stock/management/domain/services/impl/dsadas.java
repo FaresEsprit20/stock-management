@@ -210,7 +210,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     }
 
     @Override
-    public CustomerOrderDto updateCustomerOrderDto(Integer orderId, Integer customerId) {
+    public CustomerOrderDto updateCustomer(Integer orderId, Integer customerId) {
         checkOrderId(customerId);
         if (customerId == null) {
             log.error("The id of the customer is NULL");
@@ -265,12 +265,12 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     }
 
     @Override
-    public CustomerOrderDto deleteCustomerOrderDto(Integer orderId, Integer orderLineId) {
+    public CustomerOrderDto deleteCustomerOrderLine(Integer orderId, Integer orderLineId) {
         checkOrderId(orderId);
         checkOrderLineId(orderLineId);
 
         CustomerOrderDto customerOrderDto = checkOrderState(orderId);
-        // Just to check the LigneCommandeClient and inform the client in case it is absent
+        // Just to check the Customer order line and inform the customer in case it is absent
         findCustomerOrderLine(orderLineId);
         customerOrderLineRepository.deleteById(orderLineId);
 
