@@ -338,7 +338,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
         StockMovementDto mvtStkDto = new StockMovementDto();
         mvtStkDto.setProduct(ProductDto.fromEntity(lig.getProduct()));
         mvtStkDto.setMovementDate(Instant.now());
-        mvtStkDto.setStockMvtType(StockMvtType.OUT);
+        mvtStkDto.setStockMvtType(StockMvtType.IN);
         mvtStkDto.setMovementSource(StockMvtSource.SUPPLIER_COMMAND);
         mvtStkDto.setQuantity(lig.getQuantity());
         mvtStkDto.setCompanyId(lig.getCompanyId());
@@ -347,5 +347,5 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
 
 
-    
+
 }
