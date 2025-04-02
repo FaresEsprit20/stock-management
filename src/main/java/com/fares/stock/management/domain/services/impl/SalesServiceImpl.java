@@ -5,12 +5,15 @@ import com.fares.stock.management.core.exception.ErrorCodes;
 import com.fares.stock.management.core.exception.InvalidEntityException;
 import com.fares.stock.management.core.exception.InvalidOperationException;
 import com.fares.stock.management.core.validators.SalesDtoValidator;
+import com.fares.stock.management.domain.dto.product.ProductDto;
 import com.fares.stock.management.domain.dto.sale_line.SaleLineDto;
 import com.fares.stock.management.domain.dto.sales.SalesDto;
 import com.fares.stock.management.domain.dto.stock_movement.StockMovementDto;
 import com.fares.stock.management.domain.entities.Product;
 import com.fares.stock.management.domain.entities.SaleLine;
 import com.fares.stock.management.domain.entities.Sales;
+import com.fares.stock.management.domain.entities.enums.StockMvtSource;
+import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.ProductRepository;
 import com.fares.stock.management.domain.repository.jpa.SaleLineRepository;
 import com.fares.stock.management.domain.repository.jpa.SalesRepository;
@@ -134,15 +137,15 @@ public class SalesServiceImpl implements SalesService {
     }
 
     private void updateMvtStk(SaleLine lig) {
-        StockMovementDto mvtStkDto = MvtStkDto.builder()
-                .article(ArticleDto.fromEntity(lig.getArticle()))
-                .dateMvt(Instant.now())
-                .typeMvt(TypeMvtStk.SORTIE)
-                .sourceMvt(SourceMvtStk.VENTE)
-                .quantite(lig.getQuantite())
-                .idEntreprise(lig.getIdEntreprise())
-                .build();
-        mvtStkService.sortieStock(mvtStkDto);
+        StockMovementDto mvtStkDto = new StockMovementDto();
+                mvtStkDto.setProduct(ProductDto.fromEntity(lig.getProduct()));
+                mvtStkDto.setMovementDate(Instant.now());
+                mvtStkDto.setStockMvtType(StockMvtType.OUT);
+                mvtStkDto.setMovementSource(StockMvtSource.SALE);
+                mvtStkDto.setQuantity(lig.getQuantity());
+                mvtStkDto.setCompanyId(lig.getCompanyId());
+
+        mvtStkService.operateOutStock(mvtStkDto);
     }
 
 
