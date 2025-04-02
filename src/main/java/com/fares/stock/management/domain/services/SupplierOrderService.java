@@ -1,6 +1,7 @@
 package com.fares.stock.management.domain.services;
 
 import com.fares.stock.management.domain.dto.supplier_dto.SupplierOrderDto;
+import com.fares.stock.management.domain.dto.supplier_order_line.SupplierOrderLineDto;
 import com.fares.stock.management.domain.entities.enums.OrderStatus;
 
 import java.math.BigDecimal;
@@ -19,7 +20,7 @@ public interface SupplierOrderService {
     SupplierOrderDto updateProduct(Integer orderId, Integer orderLineId, Integer productId);
 
     // Delete product ==> delete SupplierOrderLine
-    SupplierOrderDto deleteArticle(Integer orderId, Integer orderLineId);
+    SupplierOrderDto deleteProduct(Integer orderId, Integer orderLineId);
 
     SupplierOrderDto findById(Integer id);
 
@@ -27,7 +28,7 @@ public interface SupplierOrderService {
 
     List<SupplierOrderDto> findAll();
 
-    List<SupplierOrderDto> findAllSupplierOrderLineBySupplierOrderId(Integer orderId);
+    List<SupplierOrderLineDto> findAllSupplierOrderLineBySupplierOrderId(Integer orderId);
 
     void delete(Integer id);
 

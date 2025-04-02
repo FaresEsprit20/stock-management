@@ -1,3 +1,5 @@
+package com.fares.stock.management.domain.services.impl;
+
 import com.fares.stock.management.core.exception.EntityNotFoundException;
 import com.fares.stock.management.core.exception.ErrorCodes;
 import com.fares.stock.management.core.exception.InvalidEntityException;
@@ -145,7 +147,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     }
 
     @Override
-    public List<SupplierOrderLineDto> findAllLignesCommandesFournisseurByCommandeFournisseurId(Integer orderId) {
+    public List<SupplierOrderLineDto> findAllSupplierOrderLineBySupplierOrderId(Integer orderId) {
         return supplierOrderLineRepository.findAllBySupplierOrderId(orderId).stream()
                 .map(SupplierOrderLineDto::fromEntity)
                 .collect(Collectors.toList());
@@ -182,6 +184,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
         }
         return SupplierOrderDto.fromEntity(savedSupplierOrder);
     }
+
 
     @Override
     public SupplierOrderDto updateOrderQuantity(Integer orderId, Integer orderLineId, BigDecimal quantity) {
@@ -232,7 +235,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     }
 
     @Override
-    public SupplierOrderDto updateArticle(Integer orderId, Integer orderLineId, Integer productId) {
+    public SupplierOrderDto updateProduct(Integer orderId, Integer orderLineId, Integer productId) {
         checkOrderId(orderId);
         checkIdOrderLine(orderLineId);
         checkIdArticle(productId, "nouvel");
@@ -264,7 +267,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     }
 
     @Override
-    public SupplierOrderDto deleteArticle(Integer orderId, Integer orderLineId) {
+    public SupplierOrderDto deleteProduct(Integer orderId, Integer orderLineId) {
         checkOrderId(orderId);
         checkIdOrderLine(orderLineId);
 
@@ -290,7 +293,8 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
                 supplierOrderLineRepository.findById(orderLineId);
         if (ligneCommandeFournisseurOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "No supplier order line has been found with the ID " + orderLineId, ErrorCodes.SUPPLIER_ORDER_NOT_FOUND);
+                    "No supplier order line has been found with the ID " + orderLineId,
+                    ErrorCodes.SUPPLIER_ORDER_NOT_FOUND);
         }
         return ligneCommandeFournisseurOptional;
     }
