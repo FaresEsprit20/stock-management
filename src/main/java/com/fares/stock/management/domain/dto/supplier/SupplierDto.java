@@ -7,6 +7,7 @@ import com.fares.stock.management.domain.entities.Supplier;
 
 public class SupplierDto {
 
+    private Integer id;
     private String firstName;
     private String lastName;
     private Address address;
@@ -20,8 +21,9 @@ public class SupplierDto {
     }
 
     // All-args constructor
-    public SupplierDto(String firstName, String lastName, Address address, String photo,
+    public SupplierDto(Integer id, String firstName, String lastName, Address address, String photo,
                        String email, String numTel, Integer idEnterprise) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -29,6 +31,14 @@ public class SupplierDto {
         this.email = email;
         this.numTel = numTel;
         this.idEnterprise = idEnterprise;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     // Getters
@@ -98,6 +108,7 @@ public class SupplierDto {
         }
 
         return new SupplierDto(
+                supplier.getId(),
                 supplier.getFirstName(),
                 supplier.getLastName(),
                 supplier.getAddress(),
@@ -113,6 +124,7 @@ public class SupplierDto {
             return null;
         }
         Supplier supplier = new Supplier();
+        supplier.setId(supplierDto.getId());
         supplier.setFirstName(supplierDto.getFirstName());
         supplier.setLastName(supplierDto.getLastName());
         supplier.setAddress(supplierDto.getAddress());

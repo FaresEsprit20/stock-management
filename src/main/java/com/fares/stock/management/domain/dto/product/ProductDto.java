@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 public class ProductDto {
 
+    private Integer id;
     private String codeProduct;
     private String designation;
     private BigDecimal unitPriceHt;
@@ -21,9 +22,10 @@ public class ProductDto {
     }
 
     // All-args constructor
-    public ProductDto(String codeProduct, String designation, BigDecimal unitPriceHt,
+    public ProductDto(Integer id, String codeProduct, String designation, BigDecimal unitPriceHt,
                       BigDecimal amountTva, BigDecimal unitPriceTtc, String photo,
                       Integer idEnterprise, CategoryDto category) {
+        this.id = id;
         this.codeProduct = codeProduct;
         this.designation = designation;
         this.unitPriceHt = unitPriceHt;
@@ -32,6 +34,14 @@ public class ProductDto {
         this.photo = photo;
         this.idEnterprise = idEnterprise;
         this.category = category;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     // Getters and Setters
@@ -106,6 +116,7 @@ public class ProductDto {
         }
 
         return new ProductDto(
+                product.getId(),
                 product.getCodeProduct(),
                 product.getDesignation(),
                 product.getUnitPriceHt(),
@@ -123,6 +134,7 @@ public class ProductDto {
         }
 
         Product product = new Product();
+        product.setId(productDto.getId());
         product.setCodeProduct(productDto.getCodeProduct());
         product.setDesignation(productDto.getDesignation());
         product.setUnitPriceHt(productDto.getUnitPriceHt());
@@ -133,6 +145,7 @@ public class ProductDto {
         product.setCategory(CategoryDto.toEntity(productDto.getCategory()));
         return product;
     }
+
 
 
 }

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class SupplierOrderDto {
 
+    private Integer id;
     private String code;
     private Instant orderDate;
     private OrderStatus orderStatus;
@@ -23,8 +24,10 @@ public class SupplierOrderDto {
     }
 
     // All-args constructor
-    public SupplierOrderDto(String code, Instant orderDate, OrderStatus orderStatus,
-                            Integer idEnterprise, SupplierDto supplier, List<SupplierOrderLineDto> supplierOrderLines) {
+    public SupplierOrderDto(Integer id, String code, Instant orderDate, OrderStatus orderStatus,
+                            Integer idEnterprise, SupplierDto supplier,
+                            List<SupplierOrderLineDto> supplierOrderLines) {
+        this.id = id;
         this.code = code;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
@@ -34,6 +37,16 @@ public class SupplierOrderDto {
     }
 
     // Getters and Setters
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getCode() {
         return code;
     }
@@ -88,6 +101,7 @@ public class SupplierOrderDto {
             return null;
         }
         return new SupplierOrderDto(
+                supplierOrder.getId(),
                 supplierOrder.getCode(),
                 supplierOrder.getOrder_date(),
                 supplierOrder.getOrder_status(),
@@ -104,6 +118,7 @@ public class SupplierOrderDto {
             return null;
         }
         SupplierOrder supplierOrder = new SupplierOrder();
+        supplierOrder.setId(supplierOrderDto.getId());
         supplierOrder.setCode(supplierOrderDto.getCode());
         supplierOrder.setOrder_date(supplierOrderDto.getOrderDate());
         supplierOrder.setOrder_status(supplierOrderDto.getOrderStatus());
@@ -113,6 +128,10 @@ public class SupplierOrderDto {
                 .map(SupplierOrderLineDto::toEntity)
                 .collect(Collectors.toList()));
         return supplierOrder;
+    }
+
+    public boolean isCommandeLivree() {
+        return OrderStatus.LIVREE.equals(this.orderStatus);
     }
 
 
