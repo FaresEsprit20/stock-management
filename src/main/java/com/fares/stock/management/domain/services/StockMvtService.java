@@ -11,9 +11,9 @@ public interface StockMvtService {
 
     List<StockMovementDto> mvtStkProduct(Integer productId);
 
-    StockMovementDto inStock(StockMovementDto stockMovementDto);
+    StockMovementDto operateInStock(StockMovementDto stockMovementDto);
 
-    StockMovementDto outStock(StockMovementDto stockMovementDto);
+    StockMovementDto operateOutStock(StockMovementDto stockMovementDto);
 
     StockMovementDto correctionStockPos(StockMovementDto stockMovementDto);
 

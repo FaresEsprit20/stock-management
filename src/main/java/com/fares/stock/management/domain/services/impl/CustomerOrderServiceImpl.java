@@ -335,6 +335,6 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         mvtStkDto.setQuantity(lig.getQuantity());
         mvtStkDto.setCompanyId(lig.getCompanyId());
 
-        stockMovementService.outStock(mvtStkDto);
+        stockMovementService.operateOutStock(mvtStkDto);
     }
 }
