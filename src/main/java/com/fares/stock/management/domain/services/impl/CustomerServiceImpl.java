@@ -10,7 +10,8 @@ import com.fares.stock.management.domain.entities.CustomerOrder;
 import com.fares.stock.management.domain.repository.jpa.CustomerOrderRepository;
 import com.fares.stock.management.domain.repository.jpa.CustomerRepository;
 import com.fares.stock.management.domain.services.CustomerService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class CustomerServiceImpl implements CustomerService {
+
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final CustomerRepository customerRepository;
     private final CustomerOrderRepository customerOrderRepository;

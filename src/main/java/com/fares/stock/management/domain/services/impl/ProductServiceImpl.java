@@ -17,7 +17,8 @@ import com.fares.stock.management.domain.repository.jpa.ProductRepository;
 import com.fares.stock.management.domain.repository.jpa.SaleLineRepository;
 import com.fares.stock.management.domain.repository.jpa.SupplierOrderLineRepository;
 import com.fares.stock.management.domain.services.ProductService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,9 +27,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
     private final ProductRepository productRepository;
     private final SaleLineRepository saleLineRepository;
     private final SupplierOrderLineRepository supplierOrderLineRepository;

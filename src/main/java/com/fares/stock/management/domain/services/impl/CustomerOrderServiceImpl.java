@@ -21,7 +21,8 @@ import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.*;
 import com.fares.stock.management.domain.services.CustomerOrderService;
 import com.fares.stock.management.domain.services.StockMvtService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -34,8 +35,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class CustomerOrderServiceImpl implements CustomerOrderService {
+
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final CustomerOrderRepository customerOrderRepository;
     private final CustomerOrderLineRepository customerOrderLineRepository;

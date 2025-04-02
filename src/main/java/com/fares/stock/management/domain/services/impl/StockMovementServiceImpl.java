@@ -1,4 +1,4 @@
-package com.fares.stock.management.domain.services;
+package com.fares.stock.management.domain.services.impl;
 
 import com.fares.stock.management.core.exception.ErrorCodes;
 import com.fares.stock.management.core.exception.InvalidEntityException;
@@ -6,7 +6,10 @@ import com.fares.stock.management.core.validators.StockMovementDtoValidator;
 import com.fares.stock.management.domain.dto.stock_movement.StockMovementDto;
 import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.StockMovementRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.fares.stock.management.domain.services.ProductService;
+import com.fares.stock.management.domain.services.StockMvtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class StockMovementServiceImpl implements StockMvtService {
+
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final StockMovementRepository repository;
     private final ProductService productService;

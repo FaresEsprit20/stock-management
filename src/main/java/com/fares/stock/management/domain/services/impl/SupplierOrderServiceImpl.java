@@ -25,6 +25,8 @@ import com.fares.stock.management.domain.repository.jpa.SupplierRepository;
 import com.fares.stock.management.domain.services.StockMvtService;
 import com.fares.stock.management.domain.services.SupplierOrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -37,8 +39,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class SupplierOrderServiceImpl implements SupplierOrderService {
+
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final SupplierOrderRepository supplierOrderRepository;
     private final SupplierOrderLineRepository supplierOrderLineRepository;

@@ -17,10 +17,13 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
-@Slf4j
 public class CategoryServiceImpl implements CategoryService {
+
+    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
