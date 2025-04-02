@@ -17,7 +17,7 @@ public interface UserService {
 
     UserDto findByEmail(String email);
 
-//    UserDto changerMotDePasse(ChangerMotDePasseUtilisateurDto dto);
+    UserDto changePassword(ChangerMotDePasseUtilisateurDto dto);
 
 
 }
