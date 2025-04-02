@@ -2,7 +2,11 @@ import com.fares.stock.management.core.exception.EntityNotFoundException;
 import com.fares.stock.management.core.exception.ErrorCodes;
 import com.fares.stock.management.core.exception.InvalidEntityException;
 import com.fares.stock.management.core.exception.InvalidOperationException;
+import com.fares.stock.management.core.validators.ProductDtoValidator;
 import com.fares.stock.management.core.validators.SupplierOrderDtoValidator;
+import com.fares.stock.management.domain.dto.product.ProductDto;
+import com.fares.stock.management.domain.dto.stock_movement.StockMovementDto;
+import com.fares.stock.management.domain.dto.supplier.SupplierDto;
 import com.fares.stock.management.domain.dto.supplier_dto.SupplierOrderDto;
 import com.fares.stock.management.domain.dto.supplier_order_line.SupplierOrderLineDto;
 import com.fares.stock.management.domain.entities.Product;
@@ -10,6 +14,8 @@ import com.fares.stock.management.domain.entities.Supplier;
 import com.fares.stock.management.domain.entities.SupplierOrder;
 import com.fares.stock.management.domain.entities.SupplierOrderLine;
 import com.fares.stock.management.domain.entities.enums.OrderStatus;
+import com.fares.stock.management.domain.entities.enums.StockMvtSource;
+import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.ProductRepository;
 import com.fares.stock.management.domain.repository.jpa.SupplierOrderLineRepository;
 import com.fares.stock.management.domain.repository.jpa.SupplierOrderRepository;
@@ -206,122 +212,133 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     @Override
     public SupplierOrderDto updateSupplier(Integer orderId, Integer supplierId) {
         checkIdCommande(orderId);
-        if (idFournisseur == null) {
-            log.error("L'ID du fournisseur is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un ID fournisseur null",
+        if (supplierId == null) {
+            log.error("the ID of the supplier is NULL");
+            throw new InvalidOperationException("Impossible to modify the status of the order with a nul supplier IDl",
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
-        SupplierOrderDto commandeFournisseur = checkEtatCommande(idCommande);
-        Optional<Fournisseur> fournisseurOptional = fournisseurRepository.findById(idFournisseur);
+        SupplierOrderDto supplierOrderDto = checkEtatCommande(orderId);
+        Optional<Supplier> fournisseurOptional = supplierRepository.findById(supplierId);
         if (fournisseurOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Aucun fournisseur n'a ete trouve avec l'ID " + idFournisseur, ErrorCodes.SUPPLIER_NOT_FOUND);
+                    "No Supplier has been found with the ID " + supplierId, ErrorCodes.SUPPLIER_NOT_FOUND);
         }
-        commandeFournisseur.setFournisseur(FournisseurDto.fromEntity(fournisseurOptional.get()));
+        supplierOrderDto.setSupplier(SupplierDto.fromEntity(fournisseurOptional.get()));
 
         return SupplierOrderDto.fromEntity(
-                commandeFournisseurRepository.save(SupplierOrderDto.toEntity(commandeFournisseur))
+                supplierOrderRepository.save(SupplierOrderDto.toEntity(supplierOrderDto))
         );
     }
 
     @Override
-    public SupplierOrderDto updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle) {
-        checkIdCommande(idCommande);
-        checkIdLigneCommande(idLigneCommande);
-        checkIdArticle(idArticle, "nouvel");
+    public SupplierOrderDto updateArticle(Integer orderId, Integer orderLineId, Integer productId) {
+        checkIdCommande(orderId);
+        checkIdLigneCommande(orderLineId);
+        checkIdArticle(productId, "nouvel");
 
-        SupplierOrderDto commandeFournisseur = checkEtatCommande(idCommande);
+        SupplierOrderDto commandeFournisseur = checkEtatCommande(orderId);
 
-        Optional<SupplierOrderLine> ligneCommandeFournisseur = findSupplierOrderLine(idLigneCommande);
+        Optional<SupplierOrderLine> ligneCommandeFournisseur = findSupplierOrderLine(orderLineId);
 
-        Optional<Article> articleOptional = articleRepository.findById(idArticle);
+        Optional<Product> articleOptional = productRepository.findById(productId);
         if (articleOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Aucune article n'a ete trouve avec l'ID " + idArticle, ErrorCodes.ARTICLE_NOT_FOUND);
+                    "No product has been found with the ID " + productId, ErrorCodes.ARTICLE_NOT_FOUND);
         }
 
-        List<String> errors = ArticleValidator.validate(ArticleDto.fromEntity(articleOptional.get()));
+        List<String> errors = ProductDtoValidator.validate(ProductDto.fromEntity(articleOptional.get()));
         if (!errors.isEmpty()) {
             throw new InvalidEntityException("Article invalid", ErrorCodes.ARTICLE_NOT_VALID, errors);
         }
 
-        SupplierOrderLine ligneCommandeFournisseurToSaved = ligneCommandeFournisseur.get();
-        ligneCommandeFournisseurToSaved.setArticle(articleOptional.get());
-        ligneCommandeFournisseurRepository.save(ligneCommandeFournisseurToSaved);
+        if (ligneCommandeFournisseur.isEmpty()) {
+            throw new EntityNotFoundException(
+                    "Order Line of the supplier has not been found " + productId, ErrorCodes.ARTICLE_NOT_FOUND);
+        }
+        SupplierOrderLine supplierOrderLineToSaved = ligneCommandeFournisseur.get();
+        supplierOrderLineToSaved.setProduct(articleOptional.get());
+        supplierOrderLineRepository.save(supplierOrderLineToSaved);
 
         return commandeFournisseur;
     }
 
     @Override
-    public SupplierOrderDto deleteArticle(Integer idCommande, Integer idLigneCommande) {
-        checkIdCommande(idCommande);
-        checkIdLigneCommande(idLigneCommande);
+    public SupplierOrderDto deleteArticle(Integer orderId, Integer orderLineId) {
+        checkIdCommande(orderId);
+        checkIdLigneCommande(orderLineId);
 
-        SupplierOrderDto commandeFournisseur = checkEtatCommande(idCommande);
+        SupplierOrderDto supplierOrderDto = checkEtatCommande(orderId);
         // Just to check the SupplierOrderLine and inform the fournisseur in case it is absent
-        findSupplierOrderLine(idLigneCommande);
-        ligneCommandeFournisseurRepository.deleteById(idLigneCommande);
+        findSupplierOrderLine(orderLineId);
+        supplierOrderLineRepository.deleteById(orderLineId);
 
-        return commandeFournisseur;
+        return supplierOrderDto;
     }
 
-    private SupplierOrderDto checkEtatCommande(Integer idCommande) {
-        SupplierOrderDto commandeFournisseur = findById(idCommande);
-        if (commandeFournisseur.isCommandeLivree()) {
-            throw new InvalidOperationException("Impossible de modifier la commande lorsqu'elle est livree", ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
+    private SupplierOrderDto checkOrderStatus(Integer orderId) {
+        SupplierOrderDto supplierOrderDto = findById(orderId);
+        if (supplierOrderDto.isCommandeLivree()) {
+            throw new InvalidOperationException("Impossible de modify the order when it's already delivered", ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
-        return commandeFournisseur;
+        return supplierOrderDto;
     }
 
-    private Optional<SupplierOrderLine> findSupplierOrderLine(Integer idLigneCommande) {
-        Optional<SupplierOrderLine> ligneCommandeFournisseurOptional = ligneCommandeFournisseurRepository.findById(idLigneCommande);
+    private Optional<SupplierOrderLine> findSupplierOrderLine(Integer orderLineId) {
+        Optional<SupplierOrderLine> ligneCommandeFournisseurOptional =
+                supplierOrderLineRepository.findById(orderLineId);
         if (ligneCommandeFournisseurOptional.isEmpty()) {
             throw new EntityNotFoundException(
-                    "Aucune ligne commande fournisseur n'a ete trouve avec l'ID " + idLigneCommande, ErrorCodes.SUPPLIER_ORDER_NOT_FOUND);
+                    "No supplier order line has been found with the ID " + orderLineId, ErrorCodes.SUPPLIER_ORDER_NOT_FOUND);
         }
         return ligneCommandeFournisseurOptional;
     }
 
-    private void checkIdCommande(Integer idCommande) {
-        if (idCommande == null) {
-            log.error("Commande fournisseur ID is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un ID null",
+    private void checkOrderId(Integer orderId) {
+        if (orderId == null) {
+            log.error("Supplier Order ID is NULL");
+            throw new InvalidOperationException("Impossible to modify the state of the order" +
+                    " with a null ID",
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
     }
 
-    private void checkIdLigneCommande(Integer idLigneCommande) {
-        if (idLigneCommande == null) {
-            log.error("L'ID de la ligne commande is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec une ligne de commande null",
+    private void checkIdOrderLine(Integer orderLineId) {
+        if (orderLineId == null) {
+            log.error("The ID of the order line is NULL");
+            throw new InvalidOperationException("Impossible to modify the state of the order with a" +
+                    " null order line ID",
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
     }
 
-    private void checkIdArticle(Integer idArticle, String msg) {
-        if (idArticle == null) {
-            log.error("L'ID de " + msg + " is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un " + msg + " ID article null",
+    private void checkIdArticle(Integer productId, String msg) {
+        if (productId == null) {
+            log.error(" The ID of " + msg + " is NULL");
+            throw new InvalidOperationException("Impossible to modify the state of the order with a " + msg +
+                    " null product ID ",
                     ErrorCodes.SUPPLIER_ORDER_NON_MODIFIABLE);
         }
     }
 
-    private void updateMvtStk(Integer idCommande) {
-        List<SupplierOrderLine> ligneCommandeFournisseur = ligneCommandeFournisseurRepository.findAllByCommandeFournisseurId(idCommande);
-        ligneCommandeFournisseur.forEach(lig -> {
+    private void updateMvtStk(Integer orderId) {
+        List<SupplierOrderLine> supplierOrderLines = supplierOrderLineRepository.findAllBySupplierOrderId(orderId);
+        supplierOrderLines.forEach(lig -> {
             effectuerEntree(lig);
         });
     }
 
     private void effectuerEntree(SupplierOrderLine lig) {
-        MvtStkDto mvtStkDto = MvtStkDto.builder()
-                .article(ArticleDto.fromEntity(lig.getArticle()))
-                .dateMvt(Instant.now())
-                .typeMvt(TypeMvtStk.ENTREE)
-                .sourceMvt(SourceMvtStk.COMMANDE_FOURNISSEUR)
-                .quantite(lig.getQuantite())
-                .idEntreprise(lig.getIdEntreprise())
-                .build();
-        mvtStkService.entreeStock(mvtStkDto);
+        StockMovementDto mvtStkDto = new StockMovementDto();
+        mvtStkDto.setProduct(ProductDto.fromEntity(lig.getProduct()));
+        mvtStkDto.setMovementDate(Instant.now());
+        mvtStkDto.setStockMvtType(StockMvtType.OUT);
+        mvtStkDto.setMovementSource(StockMvtSource.SUPPLIER_COMMAND);
+        mvtStkDto.setQuantity(lig.getQuantity());
+        mvtStkDto.setCompanyId(lig.getCompanyId());
+
+        stockMovementService.entreeStock(mvtStkDto);
     }
+
+
+
 }
