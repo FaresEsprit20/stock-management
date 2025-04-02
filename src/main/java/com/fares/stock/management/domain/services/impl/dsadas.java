@@ -6,7 +6,12 @@ import com.fares.stock.management.core.exception.InvalidEntityException;
 import com.fares.stock.management.core.exception.InvalidOperationException;
 import com.fares.stock.management.core.validators.CustomerOrderValidator;
 import com.fares.stock.management.domain.dto.customer_order.CustomerOrderDto;
+import com.fares.stock.management.domain.dto.customer_order_line.CustomerOrderLineDto;
 import com.fares.stock.management.domain.entities.Customer;
+import com.fares.stock.management.domain.entities.CustomerOrder;
+import com.fares.stock.management.domain.entities.CustomerOrderLine;
+import com.fares.stock.management.domain.entities.Product;
+import com.fares.stock.management.domain.entities.enums.OrderStatus;
 import com.fares.stock.management.domain.repository.jpa.*;
 import com.fares.stock.management.domain.services.CustomerOrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -62,134 +67,140 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
                     ErrorCodes.CLIENT_NOT_FOUND);
         }
 
-        List<String> articleErrors = new ArrayList<>();
+        List<String> productErrors = new ArrayList<>();
 
-        if (dto.getLigneCommandeClients() != null) {
-            dto.getLigneCommandeClients().forEach(ligCmdClt -> {
-                if (ligCmdClt.getArticle() != null) {
-                    Optional<Article> article = articleRepository.findById(ligCmdClt.getArticle().getId());
-                    if (article.isEmpty()) {
-                        articleErrors.add("L'article avec l'ID " + ligCmdClt.getArticle().getId() + " n'existe pas");
+        if (customerOrderDto.getOrderLines() != null) {
+            customerOrderDto.getOrderLines().forEach(ligCmdClt -> {
+                if (ligCmdClt.getProduct() != null) {
+                    Optional<Product> product = productRepository.findById(ligCmdClt.getProduct().getId());
+                    if (product.isEmpty()) {
+                        productErrors.add("The product with the ID " + ligCmdClt.getProduct().getId() + " does not exist in the DB");
                     }
                 } else {
-                    articleErrors.add("Impossible d'enregister une commande avec un aticle NULL");
+                    productErrors.add("Impossible to save an order with a NULL Product");
                 }
             });
         }
 
-        if (!articleErrors.isEmpty()) {
+        if (!productErrors.isEmpty()) {
             log.warn("");
-            throw new InvalidEntityException("Article n'existe pas dans la BDD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
+            throw new InvalidEntityException("Product does not exist in DB ", ErrorCodes.ARTICLE_NOT_FOUND, productErrors);
         }
-        dto.setDateCommande(Instant.now());
-        CommandeClient savedCmdClt = commandeClientRepository.save(CommandeClientDto.toEntity(dto));
+        customerOrderDto.setOrderDate(Instant.now());
+        CustomerOrder savedCmdClt = customerOrderRepository.save(CustomerOrderDto.toEntity(customerOrderDto));
 
-        if (dto.getLigneCommandeClients() != null) {
-            dto.getLigneCommandeClients().forEach(ligCmdClt -> {
-                LigneCommandeClient ligneCommandeClient = LigneCommandeClientDto.toEntity(ligCmdClt);
-                ligneCommandeClient.setCommandeClient(savedCmdClt);
-                ligneCommandeClient.setIdEntreprise(dto.getIdEntreprise());
-                LigneCommandeClient savedLigneCmd = ligneCommandeClientRepository.save(ligneCommandeClient);
+        if (customerOrderDto.getOrderLines() != null) {
+            customerOrderDto.getOrderLines().forEach(ligCmdClt -> {
+                CustomerOrderLine cltOrderLineEntity = CustomerOrderLineDto.toEntity(ligCmdClt);
+                cltOrderLineEntity.setCustomerOrder(savedCmdClt);
+                cltOrderLineEntity.setCompanyId(ligCmdClt.getCompanyId());
+                CustomerOrderLine savedOrderLine = customerOrderLineRepository.save(cltOrderLineEntity);
 
-                effectuerSortie(savedLigneCmd);
+                effectuerSortie(savedOrderLine);
             });
         }
 
-        return CommandeClientDto.fromEntity(savedCmdClt);
+        return CustomerOrderDto.fromEntity(savedCmdClt);
     }
 
     @Override
-    public CommandeClientDto findById(Integer id) {
-        if (id == null) {
-            log.error("Commande client ID is NULL");
+    public CustomerOrderDto findById(Integer customerOrderId) {
+        if (customerOrderId== null) {
+            log.error("Customer Order ID is NULL");
             return null;
         }
-        return commandeClientRepository.findById(id)
-                .map(CommandeClientDto::fromEntity)
+        return customerOrderRepository.findById(customerOrderId)
+                .map(CustomerOrderDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Aucune commande client n'a ete trouve avec l'ID " + id, ErrorCodes.COMMANDE_CLIENT_NOT_FOUND
+                        "No Customer Order has been found with the ID = " + customerOrderId, ErrorCodes.CUSTOMER_ORDER_NOT_FOUND
                 ));
     }
 
     @Override
-    public CommandeClientDto findByCode(String code) {
-        if (!StringUtils.hasLength(code)) {
-            log.error("Commande client CODE is NULL");
+    public CustomerOrderDto findByCode(String customerOrderCode) {
+        if (!StringUtils.hasLength(customerOrderCode)) {
+            log.error("Customer Order CODE is NULL");
             return null;
         }
-        return commandeClientRepository.findCommandeClientByCode(code)
-                .map(CommandeClientDto::fromEntity)
+        return customerOrderRepository.findCustomerOrderByCode(customerOrderCode)
+                .map(CustomerOrderDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Aucune commande client n'a ete trouve avec le CODE " + code, ErrorCodes.COMMANDE_CLIENT_NOT_FOUND
+                        "No customer order has been found with  CODE = " + customerOrderCode, ErrorCodes.CUSTOMER_ORDER_NOT_FOUND
                 ));
     }
 
     @Override
-    public List<CommandeClientDto> findAll() {
-        return commandeClientRepository.findAll().stream()
-                .map(CommandeClientDto::fromEntity)
+    public List<CustomerOrderDto> findAll() {
+        return customerOrderRepository.findAll().stream()
+                .map(CustomerOrderDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void delete(Integer id) {
-        if (id == null) {
-            log.error("Commande client ID is NULL");
+    public void delete(Integer customerOrderId) {
+        if (customerOrderId == null) {
+            log.error("Customer order ID is NULL");
             return;
         }
-        List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(id);
-        if (!ligneCommandeClients.isEmpty()) {
-            throw new InvalidOperationException("Impossible de supprimer une commande client deja utilisee",
-                    ErrorCodes.COMMANDE_CLIENT_ALREADY_IN_USE);
+        List<CustomerOrderLine> customerOrderLines =
+                customerOrderLineRepository.findAllByCustomerOrderId(customerOrderId);
+        if (!customerOrderLines.isEmpty()) {
+            throw new InvalidOperationException("Impossible to delete a customer order that is already in use",
+                    ErrorCodes.CUSTOMER_ORDER_ALREADY_IN_USE);
         }
-        commandeClientRepository.deleteById(id);
+        customerOrderRepository.deleteById(customerOrderId);
     }
 
     @Override
-    public List<LigneCommandeClientDto> findAllLignesCommandesClientByCommandeClientId(Integer idCommande) {
-        return ligneCommandeClientRepository.findAllByCommandeClientId(idCommande).stream()
-                .map(LigneCommandeClientDto::fromEntity)
+    public List<CustomerOrderLineDto> findAllCustomerOrderLinesByCustomerOrderId(Integer orderId) {
+        return customerOrderLineRepository.findAllByCustomerOrderId(orderId).stream()
+                .map(CustomerOrderLineDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CommandeClientDto updateEtatCommande(Integer idCommande, EtatCommande etatCommande) {
-        checkIdCommande(idCommande);
-        if (!StringUtils.hasLength(String.valueOf(etatCommande))) {
-            log.error("L'etat de la commande client is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un etat null",
-                    ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+    public CustomerOrderDto updateOrderStatus(Integer orderId, OrderStatus orderStatus) {
+        checkIdCommande(orderId);
+        if (!StringUtils.hasLength(String.valueOf(orderStatus))) {
+            log.error("The customer's order status is NULL");
+            throw new InvalidOperationException("Impossible to modify the state of the customer with a null state ",
+                    ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
-        CommandeClientDto commandeClient = checkEtatCommande(idCommande);
-        commandeClient.setEtatCommande(etatCommande);
+        CustomerOrderDto customerOrderDto = checkEtatCommande(orderId);
+        customerOrderDto.setOrderStatus(orderStatus);
 
-        CommandeClient savedCmdClt = commandeClientRepository.save(CommandeClientDto.toEntity(commandeClient));
-        if (commandeClient.isCommandeLivree()) {
-            updateMvtStk(idCommande);
+        CustomerOrder savedCmdClt = customerOrderRepository.save(CustomerOrderDto.toEntity(customerOrderDto));
+        if (customerOrderDto.isCommandeLivree()) {
+            updateMvtStk(orderId);
         }
 
-        return CommandeClientDto.fromEntity(savedCmdClt);
+        return CustomerOrderDto.fromEntity(savedCmdClt);
     }
 
     @Override
-    public CommandeClientDto updateQuantiteCommande(Integer idCommande, Integer idLigneCommande, BigDecimal quantite) {
-        checkIdCommande(idCommande);
-        checkIdLigneCommande(idLigneCommande);
+    public CustomerOrderDto updateOrderQuantity(Integer orderId, Integer orderLineId, BigDecimal quantity) {
+        checkIdCommande(orderId);
+        checkIdLigneCommande(orderLineId);
 
-        if (quantite == null || quantite.compareTo(BigDecimal.ZERO) == 0) {
-            log.error("L'ID de la ligne commande is NULL");
-            throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec une quantite null ou ZERO",
-                    ErrorCodes.COMMANDE_CLIENT_NON_MODIFIABLE);
+        if (quantity == null || quantity.compareTo(BigDecimal.ZERO) == 0) {
+            log.error("The ID of order line is NULL");
+            throw new InvalidOperationException("Impossible to modify the state of the order with a null quantity ou ZERO",
+                    ErrorCodes.CUSTOMER_ORDER_NON_MODIFIABLE);
         }
 
-        CommandeClientDto commandeClient = checkEtatCommande(idCommande);
-        Optional<LigneCommandeClient> ligneCommandeClientOptional = findLigneCommandeClient(idLigneCommande);
+        CustomerOrderDto customerOrderDto = checkEtatCommande(orderId);
+        Optional<CustomerOrderLine> customerOrderLineOptional = findLigneCommandeClient(orderLineId);
 
-        LigneCommandeClient ligneCommandeClient = ligneCommandeClientOptional.get();
-        ligneCommandeClient.setQuantite(quantite);
-        ligneCommandeClientRepository.save(ligneCommandeClient);
+        if(customerOrderLineOptional.isEmpty()) {
+            log.error("The customer Order Line is NULL");
+            throw new EntityNotFoundException("The customer Order Line is null or not found ",
+                    ErrorCodes.CUSTOMER_ORDER_NOT_FOUND);
+        }
+            CustomerOrderLine customerOrderLine = customerOrderLineOptional.get();
+            customerOrderLine.setQuantity(quantity);
+            customerOrderLineRepository.save(customerOrderLine);
 
-        return commandeClient;
+        return customerOrderDto;
     }
 
     @Override
