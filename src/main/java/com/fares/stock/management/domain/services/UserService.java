@@ -9,7 +9,7 @@ public interface UserService {
 
     UserDto save(UserDto userDto);
 
-    User findById(Integer userId);
+    UserDto findById(Integer userId);
 
     List<UserDto> findAll();
 

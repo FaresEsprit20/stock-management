@@ -69,7 +69,6 @@ public class UserServiceImpl implements UserService {
         if (userId == null) {
             log.error("User ID is null");
             throw new InvalidEntityException("The user ID is not valid", ErrorCodes.USER_NOT_VALID);
-            return null;
         }
         return userRepository.findById(userId)
                 .map(UserDto::fromEntity)
