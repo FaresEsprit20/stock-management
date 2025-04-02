@@ -43,6 +43,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     private final ProductRepository productRepository;
     private final StockMovementService stockMovementService;
 
+
     @Autowired
     public SupplierOrderServiceImpl(SupplierOrderRepository supplierOrderRepository, SupplierOrderLineRepository supplierOrderLineRepository, SupplierRepository supplierRepository, ProductRepository productRepository, StockMovementService stockMovementService) {
         this.supplierOrderRepository = supplierOrderRepository;
