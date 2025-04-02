@@ -166,7 +166,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     }
 
     @Override
-    public SupplierOrderDto updateOrderDto(Integer orderId, OrderStatus orderStatus) {
+    public SupplierOrderDto updateOrderStatus(Integer orderId, OrderStatus orderStatus) {
         checkOrderId(orderId);
         if (!StringUtils.hasLength(String.valueOf(orderStatus))) {
             log.error("The order status is NULL");
