@@ -14,6 +14,6 @@ public interface SupplierOrderRepository extends JpaRepository<SupplierOrder, In
 
     Optional<SupplierOrder> findSupplierOrderByCode(String code);
 
-    List<CustomerOrder> findAllBySupplierId(Integer id);
+    List<SupplierOrder> findAllBySupplierId(Integer id);
 
 }
