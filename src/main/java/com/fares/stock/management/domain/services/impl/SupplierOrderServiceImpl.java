@@ -22,6 +22,7 @@ import com.fares.stock.management.domain.repository.jpa.ProductRepository;
 import com.fares.stock.management.domain.repository.jpa.SupplierOrderLineRepository;
 import com.fares.stock.management.domain.repository.jpa.SupplierOrderRepository;
 import com.fares.stock.management.domain.repository.jpa.SupplierRepository;
+import com.fares.stock.management.domain.services.StockMvtService;
 import com.fares.stock.management.domain.services.SupplierOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,11 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
     private final SupplierOrderLineRepository supplierOrderLineRepository;
     private final SupplierRepository supplierRepository;
     private final ProductRepository productRepository;
-    private final StockMovementService stockMovementService;
+    private final StockMvtService stockMovementService;
 
 
     @Autowired
-    public SupplierOrderServiceImpl(SupplierOrderRepository supplierOrderRepository, SupplierOrderLineRepository supplierOrderLineRepository, SupplierRepository supplierRepository, ProductRepository productRepository, StockMovementService stockMovementService) {
+    public SupplierOrderServiceImpl(SupplierOrderRepository supplierOrderRepository, SupplierOrderLineRepository supplierOrderLineRepository, SupplierRepository supplierRepository, ProductRepository productRepository, StockMvtService stockMovementService) {
         this.supplierOrderRepository = supplierOrderRepository;
         this.supplierOrderLineRepository = supplierOrderLineRepository;
         this.supplierRepository = supplierRepository;
@@ -341,7 +342,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
         mvtStkDto.setMovementSource(StockMvtSource.SUPPLIER_COMMAND);
         mvtStkDto.setQuantity(lig.getQuantity());
         mvtStkDto.setCompanyId(lig.getCompanyId());
-        stockMovementService.entreeStock(mvtStkDto);
+        stockMovementService.inStock(mvtStkDto);
     }
 
 

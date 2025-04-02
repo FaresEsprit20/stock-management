@@ -20,6 +20,7 @@ import com.fares.stock.management.domain.entities.enums.StockMvtSource;
 import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.*;
 import com.fares.stock.management.domain.services.CustomerOrderService;
+import com.fares.stock.management.domain.services.StockMvtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,10 +41,10 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
     private final CustomerOrderLineRepository customerOrderLineRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
-    private final StockMovementService stockMovementService;
+    private final StockMvtService stockMovementService;
 
     @Autowired
-    public CustomerOrderServiceImpl(CustomerOrderRepository customerOrderRepository, CustomerOrderLineRepository customerOrderLineRepository, CustomerRepository customerRepository, ProductRepository productRepository, StockMovementRepository stockMovementRepository) {
+    public CustomerOrderServiceImpl(CustomerOrderRepository customerOrderRepository, CustomerOrderLineRepository customerOrderLineRepository, CustomerRepository customerRepository, ProductRepository productRepository, StockMvtService stockMovementService) {
         this.customerOrderRepository = customerOrderRepository;
         this.customerOrderLineRepository = customerOrderLineRepository;
         this.customerRepository = customerRepository;
@@ -334,6 +335,6 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         mvtStkDto.setQuantity(lig.getQuantity());
         mvtStkDto.setCompanyId(lig.getCompanyId());
 
-        stockMovementService.sortieStock(mvtStkDto);
+        stockMovementService.outStock(mvtStkDto);
     }
 }
