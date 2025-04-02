@@ -101,6 +101,7 @@ public class CustomerDto {
             return null;
         }
         return new CustomerDto(
+                customer.getId(),
                 customer.getFirstName(),
                 customer.getLastName(),
                 customer.getAddress(),
