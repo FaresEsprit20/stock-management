@@ -14,7 +14,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Stock Management API ")
                         .version("1.0")
-                        .description("API for managing stock, and related entities."));
+                        .description("API for managing stock, and the related entities."));
     }
 
 
