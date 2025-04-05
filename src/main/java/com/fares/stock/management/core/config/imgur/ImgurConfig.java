@@ -1,13 +1,19 @@
 package com.fares.stock.management.core.config.imgur;
 
+import com.fares.stock.management.domain.services.ImgurService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "imgur")
 public class ImgurConfig {
 
+    @Value("${imgur.client-id}")
     private String clientId;
+
+    @Value("${imgur.client-secret}")
     private String clientSecret;
 
     public String getClientId() {
@@ -24,6 +30,12 @@ public class ImgurConfig {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+
+    @Bean
+    public ImgurService imgurService() {
+        return new ImgurServiceImpl(clientId, clientSecret);
     }
 
 

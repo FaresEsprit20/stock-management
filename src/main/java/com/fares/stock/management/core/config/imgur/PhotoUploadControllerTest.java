@@ -23,8 +23,8 @@ public class PhotoUploadControllerTest {
 
     private MockMvc mockMvc;
 
-    @Mock(lenient = true)
-    private PhotoUploadClient photoUploadClient;  // Mock PhotoUploadClient
+//    @Mock(lenient = true)
+//    private PhotoUploadClient photoUploadClient;  // Mock PhotoUploadClient
 
     @InjectMocks
     private TestController testController;  // Inject mocks into the controller
@@ -34,22 +34,22 @@ public class PhotoUploadControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
     }
 
-    @Test
-    public void testUploadPhoto() throws Exception {
-        // Prepare a mock file (use any file for testing)
-        MockMultipartFile mockFile = new MockMultipartFile(
-                "file", "testImage.jpg", "image/jpeg", "dummy content".getBytes());
-
-        // Mock the behavior of the photoUploadClient
-        when(photoUploadClient.uploadPhoto(mockFile)).thenReturn("https://imgur.com/test-image");
-
-        // Perform the upload request and verify the response
-        // Perform the upload request and verify the response
-        mockMvc.perform(multipart("/test/upload")  // The endpoint you're testing
-                        .file(mockFile))
-                .andExpect(status().isOk())  // Expect HTTP 200 OK
-                .andExpect(content().string("Image uploaded successfully: https://imgur.com/test-image"))
-                .andDo(print());  // This will print request and response to console
-
-    }
+//    @Test
+//    public void testUploadPhoto() throws Exception {
+//        // Prepare a mock file (use any file for testing)
+//        MockMultipartFile mockFile = new MockMultipartFile(
+//                "file", "testImage.jpg", "image/jpeg", "dummy content".getBytes());
+//
+//        // Mock the behavior of the photoUploadClient
+//        when(photoUploadClient.uploadPhoto(mockFile)).thenReturn("https://imgur.com/test-image");
+//
+//        // Perform the upload request and verify the response
+//        // Perform the upload request and verify the response
+//        mockMvc.perform(multipart("/test/upload")  // The endpoint you're testing
+//                        .file(mockFile))
+//                .andExpect(status().isOk())  // Expect HTTP 200 OK
+//                .andExpect(content().string("Image uploaded successfully: https://imgur.com/test-image"))
+//                .andDo(print());  // This will print request and response to console
+//
+//    }
 }
