@@ -20,7 +20,6 @@ import com.fares.stock.management.domain.repository.jpa.SalesRepository;
 import com.fares.stock.management.domain.services.ProductService;
 import com.fares.stock.management.domain.services.SalesService;
 import com.fares.stock.management.domain.services.StockMvtService;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +37,13 @@ public class SalesServiceImpl implements SalesService {
 
     private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
-    private final ProductService productService;
     private final SalesRepository salesRepository;
     private final SaleLineRepository saleLineRepository;
     private final StockMvtService mvtStkService;
     private final ProductRepository productRepository;
 
     @Autowired
-    public SalesServiceImpl(ProductService productService, SalesRepository salesRepository, SaleLineRepository saleLineRepository, StockMvtService mvtStkService, ProductRepository productRepository) {
-        this.productService = productService;
+    public SalesServiceImpl(SalesRepository salesRepository, SaleLineRepository saleLineRepository, StockMvtService mvtStkService, ProductRepository productRepository) {
         this.salesRepository = salesRepository;
         this.saleLineRepository = saleLineRepository;
         this.mvtStkService = mvtStkService;
@@ -106,12 +103,13 @@ public class SalesServiceImpl implements SalesService {
     public SalesDto findByCode(String code) {
         if (!StringUtils.hasLength(code)) {
             log.error("Sale CODE is NULL");
-            return null;
+            throw new InvalidEntityException("Sale ID is not valid , NUll value found",
+                    ErrorCodes.SALE_NOT_VALID);
         }
         return salesRepository.findSaleByCode(code)
                 .map(SalesDto::fromEntity)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "No customer SAle has been found with the CODE " + code, ErrorCodes.SALE_NOT_VALID
+                        "No customer Sale has been found with the CODE " + code, ErrorCodes.SALE_NOT_VALID
                 ));
     }
 
@@ -125,8 +123,9 @@ public class SalesServiceImpl implements SalesService {
     @Override
     public void delete(Integer id) {
         if (id == null) {
-            log.error("Vente ID is NULL");
-            return;
+            log.error("Sale ID is NULL");
+            throw new InvalidEntityException("Sale ID is not valid , NUll value found",
+                    ErrorCodes.SALE_NOT_VALID);
         }
         List<SaleLine> ligneVentes = saleLineRepository.findAllBySaleId(id);
         if (!ligneVentes.isEmpty()) {
