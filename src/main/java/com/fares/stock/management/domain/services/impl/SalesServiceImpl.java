@@ -17,7 +17,6 @@ import com.fares.stock.management.domain.entities.enums.StockMvtType;
 import com.fares.stock.management.domain.repository.jpa.ProductRepository;
 import com.fares.stock.management.domain.repository.jpa.SaleLineRepository;
 import com.fares.stock.management.domain.repository.jpa.SalesRepository;
-import com.fares.stock.management.domain.services.ProductService;
 import com.fares.stock.management.domain.services.SalesService;
 import com.fares.stock.management.domain.services.StockMvtService;
 import org.slf4j.Logger;
@@ -54,16 +53,17 @@ public class SalesServiceImpl implements SalesService {
 
 
     @Override
-    public SalesDto save(SalesDto dto) {
-        List<String> errors = SalesDtoValidator.validate(dto);
+    public SalesDto save(SalesDto salesDto) {
+        List<String> errors = SalesDtoValidator.validate(salesDto);
         if (!errors.isEmpty()) {
             log.error("Sales is not valid");
-            throw new InvalidEntityException("The object Sale is not valid", ErrorCodes.SALE_NOT_VALID, errors);
+            throw new InvalidEntityException("The object Sale is not valid",
+                    ErrorCodes.SALE_NOT_VALID, errors);
         }
 
         List<String> articleErrors = new ArrayList<>();
 
-        dto.getSaleLines().forEach(ligneVenteDto -> {
+        salesDto.getSaleLines().forEach(ligneVenteDto -> {
             Optional<Product> article = productRepository.findById(ligneVenteDto.getProduct().getId());
             if (article.isEmpty()) {
                 articleErrors.add("No product with teh ID " + ligneVenteDto.getProduct().getId() + " has been found in DB ");
@@ -75,9 +75,9 @@ public class SalesServiceImpl implements SalesService {
             throw new InvalidEntityException("One or more articles were not found in the DB", ErrorCodes.SALE_NOT_VALID, errors);
         }
 
-        Sales savedSales = salesRepository.save(SalesDto.toEntity(dto));
+        Sales savedSales = salesRepository.save(SalesDto.toEntity(salesDto));
 
-        dto.getSaleLines().forEach(ligneVenteDto -> {
+        salesDto.getSaleLines().forEach(ligneVenteDto -> {
             SaleLine ligneVente = SaleLineDto.toEntity(ligneVenteDto);
             ligneVente.setSale(savedSales);
             saleLineRepository.save(ligneVente);
@@ -96,7 +96,8 @@ public class SalesServiceImpl implements SalesService {
         }
         return salesRepository.findById(salesId)
                 .map(SalesDto::fromEntity)
-                .orElseThrow(() -> new EntityNotFoundException("No Sale has been found in the DB", ErrorCodes.SALE_NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException("No Sale has been found in the DB",
+                        ErrorCodes.SALE_NOT_FOUND));
     }
 
     @Override
@@ -127,22 +128,22 @@ public class SalesServiceImpl implements SalesService {
             throw new InvalidEntityException("Sale ID is not valid , NUll value found",
                     ErrorCodes.SALE_NOT_VALID);
         }
-        List<SaleLine> ligneVentes = saleLineRepository.findAllBySaleId(id);
-        if (!ligneVentes.isEmpty()) {
+        List<SaleLine> saleLines = saleLineRepository.findAllBySaleId(id);
+        if (!saleLines.isEmpty()) {
             throw new InvalidOperationException("Impossible to delete a Sale ...",
                     ErrorCodes.SALE_ALREADY_IN_USE);
         }
         salesRepository.deleteById(id);
     }
 
-    private void updateMvtStk(SaleLine lig) {
+    private void updateMvtStk(SaleLine saleLine) {
         StockMovementDto mvtStkDto = new StockMovementDto();
-                mvtStkDto.setProduct(ProductDto.fromEntity(lig.getProduct()));
+                mvtStkDto.setProduct(ProductDto.fromEntity(saleLine.getProduct()));
                 mvtStkDto.setMovementDate(Instant.now());
                 mvtStkDto.setStockMvtType(StockMvtType.OUT);
                 mvtStkDto.setMovementSource(StockMvtSource.SALE);
-                mvtStkDto.setQuantity(lig.getQuantity());
-                mvtStkDto.setCompanyId(lig.getCompanyId());
+                mvtStkDto.setQuantity(saleLine.getQuantity());
+                mvtStkDto.setCompanyId(saleLine.getCompanyId());
 
         mvtStkService.operateOutStock(mvtStkDto);
     }
