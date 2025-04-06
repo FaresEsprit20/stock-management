@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @ConfigurationProperties(prefix = "imgur")
@@ -33,11 +34,11 @@ public class ImgurConfig {
         this.clientSecret = clientSecret;
     }
 
-
     @Bean
-    public ImgurService imgurService() {
-        return new ImgurServiceImpl(clientId, clientSecret);
+    public ImgurService imgurService(RestTemplate restTemplate) {
+        return new ImgurServiceImpl(restTemplate, this);
     }
+
 
 
 }
