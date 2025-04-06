@@ -9,7 +9,12 @@ public class ImgurServiceImpl implements ImgurService {
 
     @Override
     public String savePhoto(InputStream photo, String title) {
-        return "";
+        connect();
+        UploadMetaData uploadMetaData = new UploadMetaData();
+        uploadMetaData.setTitle(title);
+
+        String photoId = flickr.getUploader().upload(photo, uploadMetaData);
+        return flickr.getPhotosInterface().getPhoto(photoId).getMedium640Url();
     }
 
 

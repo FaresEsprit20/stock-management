@@ -1,6 +1,7 @@
 package com.fares.stock.management.core.config.imgur;
 
 import com.fares.stock.management.domain.services.ImgurService;
+import com.fares.stock.management.domain.services.impl.ImgurServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
