@@ -1,4 +1,4 @@
-package com.fares.stock.management.domain;
+package com.fares.stock.management.domain.controllers;
 
 import com.fares.stock.management.domain.controllers.api.AuthenticationApi;
 import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
