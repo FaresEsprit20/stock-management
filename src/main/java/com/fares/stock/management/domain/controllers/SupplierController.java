@@ -1,5 +1,4 @@
 package com.fares.stock.management.domain.controllers;
-
 import com.fares.stock.management.domain.controllers.api.SupplierApi;
 import com.fares.stock.management.domain.dto.supplier.SupplierDto;
 import com.fares.stock.management.domain.services.SupplierService;
