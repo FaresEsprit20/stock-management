@@ -18,7 +18,8 @@ import static com.fares.stock.management.core.constants.Constants.APP_ROOT;
 @Tag(name = "Products", description = "API for product operations")
 public interface ProductApi {
 
-    @PostMapping(value = APP_ROOT + "/products/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = APP_ROOT + "/products/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Save a product", description = "This method allows you to save or update a product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The created/updated product object"),
