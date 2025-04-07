@@ -5,7 +5,6 @@ import com.fares.stock.management.domain.dto.supplier.SupplierDto;
 import com.fares.stock.management.domain.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
