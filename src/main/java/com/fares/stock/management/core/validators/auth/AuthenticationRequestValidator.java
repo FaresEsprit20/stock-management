@@ -34,4 +34,6 @@ public class AuthenticationRequestValidator {
                     "one number, and one special character");
         }
     }
+
+
 }
