@@ -19,7 +19,6 @@ public class AuthenticationRequestValidator {
             throw new IllegalArgumentException("Login (username) must be alphanumeric, " +
                     "and can include underscores and hyphens");
         }
-
         // Validate password
         if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
             throw new IllegalArgumentException("Password must not be null or empty");
