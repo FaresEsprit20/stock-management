@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import static com.fares.stock.management.core.utils.constants.constants.Constants.*;
+
 @Tag(name = "Supplier Orders", description = "API for managing supplier orders")
 public interface SupplierOrderApi {
 
@@ -77,7 +79,7 @@ public interface SupplierOrderApi {
 
     @GetMapping(SUPPLIER_ORDER_ENDPOINT + "/order-lines/{orderId}")
     @Operation(summary = "Get order lines", description = "Retrieves all order lines for a supplier order")
-    List<SupplierOrderLineDto> findAllOrderLinesByOrderId(@PathVariable("idCommande") Integer orderId);
+    List<SupplierOrderLineDto> findAllOrderLinesByOrderId(@PathVariable("orderId") Integer orderId);
 
     @DeleteMapping(DELETE_SUPPLIER_ORDER_ENDPOINT)
     @Operation(summary = "Delete supplier order", description = "Deletes a supplier order by ID")

@@ -4,8 +4,14 @@ package com.fares.stock.management.core.utils.constants.constants;
 public interface Constants {
 
     String APP_ROOT = "stock/management/v1";
-
     String SECRET_KEY = "secretJwtToken";
+
+    String SUPPLIER_ORDER_ENDPOINT = APP_ROOT + "/supplier/orders";
+    String CREATE_SUPPLIER_ORDER_ENDPOINT = SUPPLIER_ORDER_ENDPOINT + "/create";
+    String FIND_SUPPLIER_ORDER_BY_ID_ENDPOINT = SUPPLIER_ORDER_ENDPOINT + "/{supplierOrderId}";
+    String FIND_SUPPLIER_ORDER_BY_CODE_ENDPOINT = SUPPLIER_ORDER_ENDPOINT + "/filter/{supplierOrderCode}";
+    String FIND_ALL_SUPPLIER_ORDER_ENDPOINT = SUPPLIER_ORDER_ENDPOINT + "/all";
+    String DELETE_SUPPLIER_ORDER_ENDPOINT = SUPPLIER_ORDER_ENDPOINT + "/delete/{supplierOrderId}";
 
     String ENTERPRISE_ENDPOINT = APP_ROOT + "/enterprises";
 

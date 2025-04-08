@@ -68,9 +68,6 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
-    public String generateToken(User user) {
-        return buildToken(new HashMap<>(), user, jwtExpiration);
-    }
 
     public String generateRefreshToken(UserDetails userDetails) {
         return buildToken(new HashMap<>(), userDetails, refreshExpiration);

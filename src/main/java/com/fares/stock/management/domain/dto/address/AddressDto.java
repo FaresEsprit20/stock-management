@@ -1,7 +1,13 @@
 package com.fares.stock.management.domain.dto.address;
 
 import com.fares.stock.management.domain.entities.Address;
+import lombok.*;
 
+@EqualsAndHashCode
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AddressDto {
 
     private String address1;
@@ -10,60 +16,7 @@ public class AddressDto {
     private String zipCode;
     private String country;
 
-    // No-args constructor
-    public AddressDto() {
-    }
 
-    // All-args constructor
-    public AddressDto(String address1, String address2, String city, String zipCode, String country) {
-        this.address1 = address1;
-        this.address2 = address2;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.country = country;
-    }
-
-    // Getters
-    public String getAddress1() {
-        return address1;
-    }
-
-    public String getAddress2() {
-        return address2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    // Setters
-    public void setAddress1(String address1) {
-        this.address1 = address1;
-    }
-
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    public void setTown(String city) {
-        this.city = city;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 
     // Static conversion methods
     public static AddressDto fromEntity(Address address) {
@@ -86,9 +39,11 @@ public class AddressDto {
         Address address = new Address();
         address.setAddress1(addressDto.getAddress1());
         address.setAddress2(addressDto.getAddress2());
-        address.setTown(addressDto.getCity());
+        address.setCity(addressDto.getCity());
         address.setZipCode(addressDto.getZipCode());
         address.setCountry(addressDto.getCountry());
         return address;
     }
+
+
 }
