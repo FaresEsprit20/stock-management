@@ -36,13 +36,14 @@ public class AddressDto {
         if (addressDto == null) {
             return null;
         }
-        Address address = new Address();
-        address.setAddress1(addressDto.getAddress1());
-        address.setAddress2(addressDto.getAddress2());
-        address.setCity(addressDto.getCity());
-        address.setZipCode(addressDto.getZipCode());
-        address.setCountry(addressDto.getCountry());
-        return address;
+        return new Address(
+                addressDto.getAddress1(),
+                addressDto.getAddress2(),
+                addressDto.getCity(),
+                addressDto.getZipCode(),
+                addressDto.getCountry()
+        );
+
     }
 
 

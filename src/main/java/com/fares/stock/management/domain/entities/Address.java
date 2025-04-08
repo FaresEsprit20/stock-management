@@ -2,10 +2,7 @@ package com.fares.stock.management.domain.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,6 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Embeddable
+@Builder
 public class Address implements Serializable {
 
     @Column(name = "address1")
