@@ -5,25 +5,22 @@ import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
 import com.fares.stock.management.domain.dto.auth.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthenticationController implements AuthenticationApi {
 
-    private final AuthenticationManager authenticationManager;
-
-    private final ApplicationUserDetailsService userDetailsService;
-
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private  AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, ApplicationUserDetailsService userDetailsService, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-    }
+    private  ApplicationUserDetailsService userDetailsService;
 
-
+    @Autowired
+    private  JwtUtil jwtUtil;
 
 
     @Override

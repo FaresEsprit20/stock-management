@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,6 +56,39 @@ public class Enterprise extends AbstractEntity {
         this.webSite = webSite;
         this.users = users;
     }
+
+    public Enterprise(Integer id, Instant creationDate, Instant lastModifiedDate,
+                      String name, String description, Address address,
+                      String codeFiscal, String photo, String email,
+                      String numTel, String webSite, List<User> users) {
+        super(id, creationDate, lastModifiedDate);
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.codeFiscal = codeFiscal;
+        this.photo = photo;
+        this.email = email;
+        this.numTel = numTel;
+        this.webSite = webSite;
+        this.users = users;
+    }
+
+    public Integer getId() {
+        return super.getId();
+    }
+
+    public void setId(Integer id) {
+        super.setId(id);
+    }
+
+    public Instant getCreationDate() {
+        return super.getCreationDate();
+    }
+
+    public Instant getLastModifiedDate() {
+        return super.getLastModifiedDate();
+    }
+
 
     public String getName() {
         return name;
@@ -128,33 +162,8 @@ public class Enterprise extends AbstractEntity {
         this.users = users;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Enterprise that = (Enterprise) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(address, that.address) && Objects.equals(codeFiscal, that.codeFiscal) && Objects.equals(photo, that.photo) && Objects.equals(email, that.email) && Objects.equals(numTel, that.numTel) && Objects.equals(webSite, that.webSite) && Objects.equals(users, that.users);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, description, address, codeFiscal, photo, email, numTel, webSite, users);
-    }
 
-    @Override
-    public String toString() {
-        return "Enterprise{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", address=" + address +
-                ", codeFiscal='" + codeFiscal + '\'' +
-                ", photo='" + photo + '\'' +
-                ", email='" + email + '\'' +
-                ", numTel='" + numTel + '\'' +
-                ", webSite='" + webSite + '\'' +
-                ", users=" + users +
-                '}';
-    }
 
 
 }

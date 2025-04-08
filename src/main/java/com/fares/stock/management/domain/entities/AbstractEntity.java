@@ -1,7 +1,6 @@
 package com.fares.stock.management.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -26,6 +25,13 @@ public class AbstractEntity implements Serializable {
     @Column(name = "lastModifiedDate")
     private Instant lastModifiedDate;
 
+    public AbstractEntity() {}
+
+    public AbstractEntity(Integer id, Instant creationDate, Instant lastModifiedDate) {
+        this.id = id;
+        this.creationDate = creationDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     public Integer getId() {
         return id;
@@ -50,4 +56,5 @@ public class AbstractEntity implements Serializable {
     public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
+
 }
