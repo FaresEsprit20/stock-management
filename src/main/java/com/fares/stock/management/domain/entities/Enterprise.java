@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "enterprise")
 public class Enterprise extends AbstractEntity {
@@ -41,129 +45,6 @@ public class Enterprise extends AbstractEntity {
 
     @OneToMany(mappedBy = "enterprise")
     private List<User> users;
-
-
-    public Enterprise() {}
-
-    public Enterprise(String name, String description, Address address, String codeFiscal, String photo, String email, String numTel, String webSite, List<User> users) {
-        this.name = name;
-        this.description = description;
-        this.address = address;
-        this.codeFiscal = codeFiscal;
-        this.photo = photo;
-        this.email = email;
-        this.numTel = numTel;
-        this.webSite = webSite;
-        this.users = users;
-    }
-
-    public Enterprise(Integer id, Instant creationDate, Instant lastModifiedDate,
-                      String name, String description, Address address,
-                      String codeFiscal, String photo, String email,
-                      String numTel, String webSite, List<User> users) {
-        super(id, creationDate, lastModifiedDate);
-        this.name = name;
-        this.description = description;
-        this.address = address;
-        this.codeFiscal = codeFiscal;
-        this.photo = photo;
-        this.email = email;
-        this.numTel = numTel;
-        this.webSite = webSite;
-        this.users = users;
-    }
-
-    public Integer getId() {
-        return super.getId();
-    }
-
-    public void setId(Integer id) {
-        super.setId(id);
-    }
-
-    public Instant getCreationDate() {
-        return super.getCreationDate();
-    }
-
-    public Instant getLastModifiedDate() {
-        return super.getLastModifiedDate();
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public String getCodeFiscal() {
-        return codeFiscal;
-    }
-
-    public void setCodeFiscal(String codeFiscal) {
-        this.codeFiscal = codeFiscal;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNumTel() {
-        return numTel;
-    }
-
-    public void setNumTel(String numTel) {
-        this.numTel = numTel;
-    }
-
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-
-
 
 
 }
