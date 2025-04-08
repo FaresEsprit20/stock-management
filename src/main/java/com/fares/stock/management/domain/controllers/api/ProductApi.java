@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fares.stock.management.core.constants.Constants.APP_ROOT;
+import static com.fares.stock.management.core.utils.constants.constants.Constants.APP_ROOT;
 
 @Tag(name = "Products", description = "API for product operations")
 public interface ProductApi {

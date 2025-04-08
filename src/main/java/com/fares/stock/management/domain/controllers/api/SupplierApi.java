@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.fares.stock.management.core.constants.Constants.SUPPLIER_ENDPOINT;
+import static com.fares.stock.management.core.utils.constants.constants.Constants.SUPPLIER_ENDPOINT;
 
 
 @Tag(name = "Suppliers", description = "API for supplier management")

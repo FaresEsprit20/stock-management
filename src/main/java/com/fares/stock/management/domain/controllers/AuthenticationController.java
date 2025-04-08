@@ -1,8 +1,11 @@
 package com.fares.stock.management.domain.controllers;
 
+import com.fares.stock.management.core.utils.constants.jwt.JwtUtil;
 import com.fares.stock.management.domain.controllers.api.AuthenticationApi;
 import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
 import com.fares.stock.management.domain.dto.auth.AuthenticationResponse;
+import com.fares.stock.management.domain.entities.ExtendedUser;
+import com.fares.stock.management.domain.services.impl.auth.ApplicationUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController implements AuthenticationApi {
 
     @Autowired
-    private  AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private  ApplicationUserDetailsService userDetailsService;
+    private ApplicationUserDetailsService userDetailsService;
 
     @Autowired
-    private  JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
 
     @Override

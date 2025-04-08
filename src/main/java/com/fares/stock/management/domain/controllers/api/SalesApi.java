@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import static com.fares.stock.management.core.constants.Constants.SALES_ENDPOINT;
+import static com.fares.stock.management.core.utils.constants.constants.Constants.SALES_ENDPOINT;
 
 @Tag(name = "Sales", description = "API for sales management")
 public interface SalesApi {

@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators;
 
-import com.fares.stock.management.core.constants.FieldsValidation;
+import com.fares.stock.management.core.utils.constants.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.supplier_order_line.SupplierOrderLineDto;
 
 import java.util.ArrayList;

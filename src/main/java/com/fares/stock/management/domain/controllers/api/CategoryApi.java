@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fares.stock.management.core.constants.Constants.APP_ROOT;
+import static com.fares.stock.management.core.utils.constants.constants.Constants.APP_ROOT;
 
 @Tag(name = "Categories", description = "API for category operations")
 public interface CategoryApi {

@@ -1,4 +1,4 @@
-package com.fares.stock.management.core.constants;
+package com.fares.stock.management.core.utils.constants.constants;
 
 import java.math.BigDecimal;
 

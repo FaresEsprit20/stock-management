@@ -1,6 +1,6 @@
 package com.fares.stock.management.core.validators.auth;
 
-import com.fares.stock.management.core.constants.FieldsValidation;
+import com.fares.stock.management.core.utils.constants.constants.FieldsValidation;
 import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
 
 public class AuthenticationRequestValidator {

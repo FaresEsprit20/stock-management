@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.fares.stock.management.core.constants.Constants.*;
-
 @Tag(name = "Supplier Orders", description = "API for managing supplier orders")
 public interface SupplierOrderApi {
 
