@@ -1,12 +1,12 @@
 package com.fares.stock.management.domain.dto.address;
 
 import com.fares.stock.management.domain.entities.Address;
-import lombok.*;
+import lombok.Data;
+import lombok.Builder;
 
-@EqualsAndHashCode
+
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class AddressDto {
 

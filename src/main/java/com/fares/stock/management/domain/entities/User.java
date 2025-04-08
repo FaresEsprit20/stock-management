@@ -49,5 +49,5 @@ public class User extends AbstractEntity {
     @JsonIgnore
     private List<Roles> roles;
 
-    
+
 }

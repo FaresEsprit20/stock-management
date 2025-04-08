@@ -3,12 +3,18 @@ package com.fares.stock.management.domain.dto.enterprise;
 import com.fares.stock.management.domain.entities.Address;
 import com.fares.stock.management.domain.entities.Enterprise;
 import com.fares.stock.management.domain.entities.User;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class EnterpriseDto {
 
     private Integer id;
+    // Setters
+    // Getters
     private String name;
     private String description;
     private Address address;
@@ -51,88 +57,6 @@ public class EnterpriseDto {
         this.email = email;
         this.numTel = numTel;
         this.webSite = webSite;
-        this.users = users;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    // Getters
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public String getCodeFiscal() {
-        return codeFiscal;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getNumTel() {
-        return numTel;
-    }
-
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public void setCodeFiscal(String codeFiscal) {
-        this.codeFiscal = codeFiscal;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setNumTel(String numTel) {
-        this.numTel = numTel;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public void setUsers(List<User> users) {
         this.users = users;
     }
 
