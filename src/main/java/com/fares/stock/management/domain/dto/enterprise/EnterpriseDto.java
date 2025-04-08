@@ -8,6 +8,7 @@ import java.util.List;
 
 public class EnterpriseDto {
 
+    private Integer id;
     private String name;
     private String description;
     private Address address;
@@ -35,6 +36,30 @@ public class EnterpriseDto {
         this.numTel = numTel;
         this.webSite = webSite;
         this.users = users;
+    }
+
+    // All-args constructor
+    public EnterpriseDto(Integer id, String name, String description, Address address,
+                         String codeFiscal, String photo, String email, String numTel,
+                         String webSite, List<User> users) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.codeFiscal = codeFiscal;
+        this.photo = photo;
+        this.email = email;
+        this.numTel = numTel;
+        this.webSite = webSite;
+        this.users = users;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     // Getters
@@ -117,6 +142,7 @@ public class EnterpriseDto {
             return null;
         }
         return new EnterpriseDto(
+                enterprise.getId(),
                 enterprise.getName(),
                 enterprise.getDescription(),
                 enterprise.getAddress(),
@@ -134,6 +160,7 @@ public class EnterpriseDto {
             return null;
         }
         Enterprise enterprise = new Enterprise();
+        enterprise.setId(enterpriseDto.getId());
         enterprise.setName(enterpriseDto.getName());
         enterprise.setDescription(enterpriseDto.getDescription());
         enterprise.setAddress(enterpriseDto.getAddress());

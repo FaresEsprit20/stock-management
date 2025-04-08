@@ -1,6 +1,7 @@
 package com.fares.stock.management.domain.services.impl.auth;
 
 import com.fares.stock.management.domain.dto.user.UserDto;
+import com.fares.stock.management.domain.entities.ExtendedUser;
 import com.fares.stock.management.domain.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
