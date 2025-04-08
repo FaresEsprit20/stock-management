@@ -16,9 +16,7 @@ import static com.fares.stock.management.core.utils.constants.constants.Constant
 
 @Service
 public class JwtUtil {
-
-
-
+    
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -66,6 +64,6 @@ public class JwtUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    
+
 }
 
