@@ -5,6 +5,7 @@ import com.fares.stock.management.core.exception.ErrorCodes;
 import com.fares.stock.management.core.exception.InvalidEntityException;
 import com.fares.stock.management.core.exception.InvalidOperationException;
 import com.fares.stock.management.core.validators.UserValidator;
+import com.fares.stock.management.domain.dto.auth.ChangePasswordUserDto;
 import com.fares.stock.management.domain.dto.user.UserDto;
 import com.fares.stock.management.domain.entities.User;
 import com.fares.stock.management.domain.repository.jpa.UserRepository;
@@ -105,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto changePassword(ChangerMotDePasseUtilisateurDto dto) {
+    public UserDto changePassword(ChangePasswordUserDto dto) {
         validate(dto);
         Optional<User> utilisateurOptional = userRepository.findById(dto.getId());
         if (utilisateurOptional.isEmpty()) {
@@ -121,7 +122,7 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private void validate(ChangerMotDePasseUtilisateurDto dto) {
+    private void validate(ChangePasswordUserDto dto) {
         if (dto == null) {
             log.warn("Impossible to modify the password with a null object");
             throw new InvalidOperationException("No Information has been provided to proceed for changing the password",
@@ -132,12 +133,12 @@ public class UserServiceImpl implements UserService {
             throw new InvalidOperationException("ID user is  null:: Impossible to modify the password ",
                     ErrorCodes.USER_CHANGE_PASSWORD_OBJECT_NOT_VALID);
         }
-        if (!StringUtils.hasLength(dto.getPassword()) || !StringUtils.hasLength(dto.getConfirmMotDePasse())) {
+        if (!StringUtils.hasLength(dto.getPassword()) || !StringUtils.hasLength(dto.getConfirmPassword())) {
             log.warn("Impossible to modify the password with a NULL password");
             throw new InvalidOperationException("Null Password:: Impossible to modify the password",
                     ErrorCodes.USER_CHANGE_PASSWORD_OBJECT_NOT_VALID);
         }
-        if (!dto.getMotDePasse().equals(dto.getConfirmMotDePasse())) {
+        if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             log.warn("Impossible to modify the password when your password and confirm password are not the same ");
             throw new InvalidOperationException("User Passwords mismatch:: Impossible to modify the password when your password and confirm password are not the same",
                     ErrorCodes.USER_CHANGE_PASSWORD_OBJECT_NOT_VALID);

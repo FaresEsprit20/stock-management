@@ -1,6 +1,7 @@
 package com.fares.stock.management.domain.controllers;
 
 import com.fares.stock.management.domain.controllers.api.UserApi;
+import com.fares.stock.management.domain.dto.auth.ChangePasswordUserDto;
 import com.fares.stock.management.domain.dto.user.UserDto;
 import com.fares.stock.management.domain.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,13 @@ public class UserController implements UserApi {
         return userService.save(userDto);
     }
 
+
+
     @Override
     public UserDto changePassword(ChangePasswordUserDto dto) {
         return userService.changePassword(dto);
     }
+
 
     @Override
     public UserDto findById(Integer id) {

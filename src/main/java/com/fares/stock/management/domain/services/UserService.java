@@ -1,7 +1,7 @@
 package com.fares.stock.management.domain.services;
 
+import com.fares.stock.management.domain.dto.auth.ChangePasswordUserDto;
 import com.fares.stock.management.domain.dto.user.UserDto;
-import com.fares.stock.management.domain.entities.User;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface UserService {
 
     UserDto findByEmail(String email);
 
-    UserDto changePassword(ChangerMotDePasseUtilisateurDto dto);
+    UserDto changePassword(ChangePasswordUserDto dto);
 
 
 }

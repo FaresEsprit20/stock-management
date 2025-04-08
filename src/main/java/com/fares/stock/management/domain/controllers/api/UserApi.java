@@ -1,5 +1,6 @@
 package com.fares.stock.management.domain.controllers.api;
 
+import com.fares.stock.management.domain.dto.auth.ChangePasswordUserDto;
 import com.fares.stock.management.domain.dto.user.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
