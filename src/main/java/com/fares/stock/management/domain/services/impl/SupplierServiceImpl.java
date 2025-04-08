@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
     private final SupplierRepository supplierRepository;
     private final SupplierOrderRepository supplierOrderRepository;

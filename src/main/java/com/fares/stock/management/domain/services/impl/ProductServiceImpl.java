@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
     private final SaleLineRepository saleLineRepository;
     private final SupplierOrderLineRepository supplierOrderLineRepository;

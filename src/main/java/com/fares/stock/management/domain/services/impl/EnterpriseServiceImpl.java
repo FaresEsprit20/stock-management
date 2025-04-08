@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class EnterpriseServiceImpl implements EnterpriseService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(EnterpriseServiceImpl.class);
     private final EnterpriseRepository enterpriseRepository;
     private final UserService userService;
     private final RolesRepository rolesRepository;

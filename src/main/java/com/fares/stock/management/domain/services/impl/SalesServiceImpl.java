@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Service
 public class SalesServiceImpl implements SalesService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(SalesServiceImpl.class);
 
     private final SalesRepository salesRepository;
     private final SaleLineRepository saleLineRepository;

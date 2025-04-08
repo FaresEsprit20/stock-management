@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class StockMovementServiceImpl implements StockMvtService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(StockMovementServiceImpl.class);
 
     private final StockMovementRepository repository;
     private final ProductService productService;

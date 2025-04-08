@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @Service
 public class SupplierOrderServiceImpl implements SupplierOrderService {
 
-    private static final Logger log = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(SupplierOrderServiceImpl.class);
 
     private final SupplierOrderRepository supplierOrderRepository;
     private final SupplierOrderLineRepository supplierOrderLineRepository;
