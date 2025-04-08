@@ -24,7 +24,7 @@ public interface PhotoApi {
             @ApiResponse(responseCode = "400", description = "Invalid photo data or metadata"),
             @ApiResponse(responseCode = "500", description = "Photo processing error")
     })
-    Object uploadPhoto(
+    Object savePhoto(
             @Parameter(description = "Context where the photo will be used")
             @PathVariable("context") String context,
 
