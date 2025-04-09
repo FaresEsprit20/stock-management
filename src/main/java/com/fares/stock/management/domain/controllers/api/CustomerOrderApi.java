@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.fares.stock.management.core.utils.constants.constants.Constants.APP_ROOT;
+import static com.fares.stock.management.core.utils.constants.Constants.APP_ROOT;
 
 @Tag(name = "Customer Orders", description = "API for managing customer orders")
 public interface CustomerOrderApi {

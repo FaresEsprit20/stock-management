@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.fares.stock.management.core.utils.constants.constants.Constants.APP_ROOT;
+import static com.fares.stock.management.core.utils.constants.Constants.APP_ROOT;
 
 @Tag(name = "Photos", description = "API for photo upload and management")
 public interface PhotoApi {

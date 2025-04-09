@@ -1,4 +1,4 @@
-package com.fares.stock.management.core.utils.constants.constants;
+package com.fares.stock.management.core.utils.constants;
 
 
 public interface Constants {

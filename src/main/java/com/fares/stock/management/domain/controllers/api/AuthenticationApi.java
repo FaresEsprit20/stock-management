@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.fares.stock.management.core.utils.constants.constants.Constants.AUTHENTICATION_ENDPOINT;
+import static com.fares.stock.management.core.utils.constants.Constants.AUTHENTICATION_ENDPOINT;
 
 @Tag(name = "Authentication", description = "API for user authentication")
 public interface AuthenticationApi {
