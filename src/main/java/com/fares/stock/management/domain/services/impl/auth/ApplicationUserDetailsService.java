@@ -35,5 +35,5 @@ public class ApplicationUserDetailsService implements UserDetailsService {
         return new ExtendedUser(user.getEmail(), user.getPassword(), user.getEnterprise().getId(), authorities);
     }
 
-    
+
 }

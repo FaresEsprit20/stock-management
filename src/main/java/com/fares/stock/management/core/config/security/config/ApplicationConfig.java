@@ -1,7 +1,9 @@
 package com.fares.stock.management.core.config.security.config;
 
 import com.fares.stock.management.core.config.auditing.ApplicationAuditAware;
+import com.fares.stock.management.domain.entities.ExtendedUser;
 import com.fares.stock.management.domain.repository.jpa.UserRepository;
+import com.fares.stock.management.domain.services.impl.auth.ApplicationUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +12,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
@@ -21,24 +27,42 @@ public class ApplicationConfig {
 
     private final UserRepository repository;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> repository.findUserByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(
+            ApplicationUserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
     @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> repository.findUserByEmail(username)
+                .map(user -> {
+                    // Convert to ExtendedUser using your existing logic
+                    List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+                            .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                            .collect(Collectors.toList());
+
+                    return new ExtendedUser(
+                            user.getEmail(),
+                            user.getPassword(),
+                            user.getEnterprise().getId(),
+                            authorities
+                    );
+                })
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+    }
+
+
+    @Bean
     public AuditorAware<Integer> auditorAware() {
         return new ApplicationAuditAware();
-    }
+  }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -49,5 +73,6 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }
