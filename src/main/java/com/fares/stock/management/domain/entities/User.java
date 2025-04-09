@@ -1,5 +1,6 @@
 package com.fares.stock.management.domain.entities;
 
+import com.fares.stock.management.core.config.security.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,9 @@ public class User extends AbstractEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonIgnore
     private List<Roles> roles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
 
 }
