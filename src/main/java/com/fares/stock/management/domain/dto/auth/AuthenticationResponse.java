@@ -11,7 +11,7 @@ public class AuthenticationResponse {
 
     private String accessToken;  // The access token
 
-
+    private String refreshToken;
 
 
 }
