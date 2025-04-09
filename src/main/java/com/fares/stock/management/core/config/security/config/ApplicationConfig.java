@@ -1,5 +1,6 @@
 package com.fares.stock.management.core.config.security.config;
 
+import com.fares.stock.management.core.config.auditing.ApplicationAuditAware;
 import com.fares.stock.management.domain.repository.jpa.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
