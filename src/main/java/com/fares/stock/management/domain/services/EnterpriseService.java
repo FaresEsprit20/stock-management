@@ -4,6 +4,7 @@ import com.fares.stock.management.domain.dto.enterprise.EnterpriseDto;
 
 import java.util.List;
 
+
 public interface EnterpriseService {
 
     EnterpriseDto save(EnterpriseDto enterpriseDto);

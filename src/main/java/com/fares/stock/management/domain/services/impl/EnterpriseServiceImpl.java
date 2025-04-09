@@ -31,13 +31,14 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     private final UserService userService;
     private final RolesRepository rolesRepository;
 
+    @Autowired
     public EnterpriseServiceImpl(EnterpriseRepository enterpriseRepository, UserService userService, RolesRepository rolesRepository) {
         this.enterpriseRepository = enterpriseRepository;
         this.userService = userService;
         this.rolesRepository = rolesRepository;
     }
 
-    @Autowired
+
 
 
     @Override

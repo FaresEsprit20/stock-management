@@ -1,15 +1,15 @@
 package com.fares.stock.management.core.handlers;
 
-import com.fares.stock.management.core.exception.CustomErrorMsg;
-import com.fares.stock.management.core.exception.EntityNotFoundException;
-import com.fares.stock.management.core.exception.InvalidEntityException;
-import com.fares.stock.management.core.exception.InvalidOperationException;
+import com.fares.stock.management.core.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.Collections;
 
 
 @RestControllerAdvice
@@ -52,19 +52,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDto, badRequest);
     }
 
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<ErrorDto> handleException(BadCredentialsException exception, WebRequest webRequest) {
-//        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-//
-//        final ErrorDto errorDto = ErrorDto.builder()
-//                .code(ErrorCodes.BAD_CREDENTIALS)
-//                .httpCode(badRequest.value())
-//                .message(exception.getMessage())
-//                .errors(Collections.singletonList("Login or / Password is incorrect "))
-//                .build();
-//
-//        return new ResponseEntity<>(errorDto, badRequest);
-//    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<CustomErrorMsg> handleException(BadCredentialsException exception, WebRequest webRequest) {
+        final HttpStatus badRequest = HttpStatus.UNAUTHORIZED;
+
+        final CustomErrorMsg errorDto = CustomErrorMsg.builder()
+                .code(ErrorCodes.BAD_CREDENTIALS)
+                .httpCode(badRequest.value())
+                .message(exception.getMessage())
+                .errors(Collections.singletonList("Login or / Password is incorrect "))
+                .build();
+
+        return new ResponseEntity<>(errorDto, badRequest);
+    }
 
 
 }

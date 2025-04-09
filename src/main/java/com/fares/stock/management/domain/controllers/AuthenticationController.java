@@ -1,45 +1,45 @@
-//package com.fares.stock.management.domain.controllers;
-//
-//import com.fares.stock.management.domain.controllers.api.AuthenticationApi;
-//import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
-//import com.fares.stock.management.domain.dto.auth.AuthenticationResponse;
-//import com.fares.stock.management.domain.entities.ExtendedUser;
-//import com.fares.stock.management.domain.services.impl.auth.ApplicationUserDetailsService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//@RestController
-//public class AuthenticationController implements AuthenticationApi {
-//
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//
-//    @Autowired
-//    private ApplicationUserDetailsService userDetailsService;
-//
-//    @Autowired
-//    private JwtUtil jwtUtil;
-//
-//
-//    @Override
-//    public ResponseEntity<AuthenticationResponse> authenticate(AuthenticationRequest request) {
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getLogin(),
-//                        request.getPassword()
-//                )
-//        );
-//        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getLogin());
-//
-//        final String jwt = jwtUtil.generateToken((ExtendedUser) userDetails);
-//
-//        return ResponseEntity.ok(AuthenticationResponse.builder().accessToken(jwt).build());
-//    }
-//
-//
-//}
-//
+package com.fares.stock.management.domain.controllers;
+
+import com.fares.stock.management.domain.controllers.api.AuthenticationApi;
+import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
+import com.fares.stock.management.domain.dto.auth.AuthenticationResponse;
+import com.fares.stock.management.domain.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+
+@RestController
+public class AuthenticationController implements AuthenticationApi {
+
+
+    private final AuthenticationService authenticationService;
+
+    @Autowired
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
+
+    @Override
+    public ResponseEntity<AuthenticationResponse> authenticate(AuthenticationRequest request) {
+        return ResponseEntity.ok(authenticationService.authenticate(request));
+    }
+
+
+
+    @PostMapping("/refresh-token")
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        authenticationService.refreshToken(request, response);
+    }
+
+
+}
+

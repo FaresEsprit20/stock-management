@@ -3,11 +3,13 @@ package com.fares.stock.management.core.exception;
 
 
 
+import lombok.Builder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+@Builder
 public class CustomErrorMsg {
 
     private Integer httpCode;
