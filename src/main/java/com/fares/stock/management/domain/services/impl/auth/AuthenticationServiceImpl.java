@@ -6,6 +6,7 @@ import com.fares.stock.management.core.config.security.token.TokenRepository;
 import com.fares.stock.management.core.config.security.token.TokenType;
 import com.fares.stock.management.domain.dto.auth.AuthenticationRequest;
 import com.fares.stock.management.domain.dto.auth.AuthenticationResponse;
+import com.fares.stock.management.domain.entities.User;
 import com.fares.stock.management.domain.repository.jpa.UserRepository;
 import com.fares.stock.management.domain.services.AuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -86,7 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
         if (userEmail != null) {
-            var user = this.repository.findByEmail(userEmail)
+            var user = this.repository.findUserByEmail(userEmail)
                     .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);
