@@ -4,7 +4,6 @@ package com.fares.stock.management.core.utils.constants;
 public interface Constants {
 
     String APP_ROOT = "stock/management/v1";
-    String SECRET_KEY = "secretJwtToken";
 
     String SUPPLIER_ORDER_ENDPOINT = APP_ROOT + "/supplier/orders";
     String CREATE_SUPPLIER_ORDER_ENDPOINT = SUPPLIER_ORDER_ENDPOINT + "/create";
