@@ -15,7 +15,7 @@ import static com.fares.stock.management.core.utils.constants.Constants.AUTHENTI
 @Tag(name = "Authentication", description = "API for user authentication")
 public interface AuthenticationApi {
 
-    @PostMapping(AUTHENTICATION_ENDPOINT + "/authenticate")
+
     @Operation(summary = "Authenticate user",
             description = "Authenticates user credentials and returns JWT token")
     @ApiResponses(value = {
@@ -23,5 +23,6 @@ public interface AuthenticationApi {
             @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid credentials"),
             @ApiResponse(responseCode = "400", description = "Bad request - Invalid input")
     })
+    @PostMapping(AUTHENTICATION_ENDPOINT + "/authenticate")
     ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request);
 }
