@@ -135,6 +135,11 @@ public class UserServiceImpl implements UserService {
                         "No user with the ID = " + userId + " has been found in the DB",
                         ErrorCodes.USER_NOT_FOUND)
                 );
+        if(user.getRoles().contains("ADMIN"))
+           throw new InvalidOperationException(
+                    " Impossible to lock/unlock user with ID " + userId + " with role ADMIN, INVALID OPERATION",
+                    ErrorCodes.USER_NOT_FOUND);
+
         user.setLocked(!user.getLocked());
         return UserDto.fromEntity(userRepository.save(user));
     }
