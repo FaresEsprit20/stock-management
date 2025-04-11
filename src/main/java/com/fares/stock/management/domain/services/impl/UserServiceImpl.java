@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
                     Collections.singletonList("Another user with the same email already exists in the DB"));
         }
 
-
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         return UserDto.fromEntity(
