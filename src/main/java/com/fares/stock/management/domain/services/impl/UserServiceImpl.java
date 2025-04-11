@@ -135,8 +135,8 @@ public class UserServiceImpl implements UserService {
                         "No user with the ID = " + userId + " has been found in the DB",
                         ErrorCodes.USER_NOT_FOUND)
                 );
-        user.is
-
+        user.setLocked(!user.getLocked());
+        return UserDto.fromEntity(userRepository.save(user));
     }
 
     private void validate(ChangePasswordUserDto dto) {

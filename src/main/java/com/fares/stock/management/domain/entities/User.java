@@ -56,7 +56,7 @@ public class User extends AbstractEntity implements UserDetails {
     private List<Token> tokens;
 
     @Column(name = "locked")
-    private boolean locked;
+    private Boolean locked;
 
     // Required UserDetails methods
     @Override
@@ -72,8 +72,7 @@ public class User extends AbstractEntity implements UserDetails {
     // Account status flags (customize as needed)
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() {return !locked;}
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return true; }
+
 
     // Custom field
     public Integer getEnterpriseId() { return enterprise.getId(); }
