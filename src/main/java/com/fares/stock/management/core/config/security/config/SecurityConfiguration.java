@@ -47,6 +47,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
+                                .requestMatchers("/api/v1/management/supplier/accounts/management")
+                                .hasRole(ADMIN.name())
                                 .requestMatchers(
                                         "/api/v1/management/supplier/orders",
                                         "/api/v1/management/supplier/enterprises",
