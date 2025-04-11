@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import static com.fares.stock.management.domain.entities.enums.UserRole.ADMIN;
+import static com.fares.stock.management.domain.entities.enums.UserRole.MANAGER;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -45,7 +47,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-
+                                .requestMatchers("/api/v1/management/supplier/orders",
+                                        "/api/v1/management/supplier/enterprises",
+                                        "/api/v1/management/supplier/suppliers",
+                                        "/api/v1/management/supplier/users",
+                                        "/api/v1/management/supplier/sales")
+                                 .hasAnyRole(ADMIN.name(), MANAGER.name())
                                 .anyRequest()
                                 .authenticated()
                 )
