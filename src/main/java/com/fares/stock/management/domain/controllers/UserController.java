@@ -26,7 +26,6 @@ public class UserController implements UserApi {
     }
 
 
-
     @Override
     public UserDto changePassword(ChangePasswordUserDto dto) {
         return userService.changePassword(dto);
@@ -38,15 +37,18 @@ public class UserController implements UserApi {
         return userService.findById(id);
     }
 
+
     @Override
     public UserDto findByEmail(String email) {
         return userService.findByEmail(email);
     }
 
+
     @Override
     public List<UserDto> findAll() {
         return userService.findAll();
     }
+
 
     @Override
     public void delete(Integer id) {

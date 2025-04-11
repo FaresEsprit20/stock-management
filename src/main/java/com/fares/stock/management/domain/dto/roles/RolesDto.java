@@ -2,10 +2,11 @@ package com.fares.stock.management.domain.dto.roles;
 
 import com.fares.stock.management.domain.dto.user.UserDto;
 import com.fares.stock.management.domain.entities.Roles;
+import com.fares.stock.management.domain.entities.enums.UserRole;
 
 public class RolesDto {
 
-    private String roleName;
+    private UserRole roleName;
     private UserDto user;
 
     // No-args constructor
@@ -13,13 +14,13 @@ public class RolesDto {
     }
 
     // All-args constructor
-    public RolesDto(String roleName, UserDto user) {
+    public RolesDto(UserRole roleName, UserDto user) {
         this.roleName = roleName;
         this.user = user;
     }
 
     // Getters
-    public String getRoleName() {
+    public UserRole getRoleName() {
         return roleName;
     }
 
@@ -28,7 +29,7 @@ public class RolesDto {
     }
 
     // Setters
-    public void setRoleName(String roleName) {
+    public void setRoleName(UserRole roleName) {
         this.roleName = roleName;
     }
 

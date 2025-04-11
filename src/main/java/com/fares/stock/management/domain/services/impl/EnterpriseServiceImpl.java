@@ -8,6 +8,7 @@ import com.fares.stock.management.domain.dto.address.AddressDto;
 import com.fares.stock.management.domain.dto.enterprise.EnterpriseDto;
 import com.fares.stock.management.domain.dto.roles.RolesDto;
 import com.fares.stock.management.domain.dto.user.UserDto;
+import com.fares.stock.management.domain.entities.enums.UserRole;
 import com.fares.stock.management.domain.repository.jpa.EnterpriseRepository;
 import com.fares.stock.management.domain.repository.jpa.RolesRepository;
 import com.fares.stock.management.domain.services.EnterpriseService;
@@ -39,8 +40,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     }
 
 
-
-
     @Override
     public EnterpriseDto save(EnterpriseDto enterpriseDto) {
         List<String> errors = EnterpriseValidator.validate(enterpriseDto);
@@ -57,7 +56,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         UserDto savedUser = userService.save(user);
 
         RolesDto rolesDto = new RolesDto();
-                rolesDto.setRoleName("ADMIN");
+                rolesDto.setRoleName(UserRole.ADMIN);
                 rolesDto.setUser(savedUser);
 
 
@@ -76,7 +75,6 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         userDto.setEnterprise(dto);
         userDto.setBirthDate(Instant.now());
         userDto.setPhoto(dto.getPhoto());
-
         return userDto;
     }
 
@@ -87,7 +85,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public EnterpriseDto findById(Integer id) {
         if (id == null) {
-            log.error("Entreprise ID is null");
+            log.error("Enterprise ID is null");
             return null;
         }
         return enterpriseRepository.findById(id)

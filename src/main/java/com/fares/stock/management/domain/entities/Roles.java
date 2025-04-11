@@ -1,12 +1,12 @@
 package com.fares.stock.management.domain.entities;
 
+import com.fares.stock.management.domain.entities.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +17,8 @@ import java.util.Objects;
 public class Roles extends AbstractEntity {
 
     @Column(name = "role_name")
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    private UserRole roleName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

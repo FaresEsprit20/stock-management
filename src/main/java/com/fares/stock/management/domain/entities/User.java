@@ -8,12 +8,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -62,7 +62,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> (GrantedAuthority) role::getRoleName)
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
                 .toList();
     }
 
