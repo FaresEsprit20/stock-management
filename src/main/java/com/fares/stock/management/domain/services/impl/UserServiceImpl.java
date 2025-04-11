@@ -124,6 +124,21 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    public UserDto toggleLock(Integer userId) {
+        if (userId == null) {
+            log.error("User ID is null");
+            throw new InvalidEntityException("The user ID is not valid", ErrorCodes.USER_NOT_VALID);
+        }
+        User user=  userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No user with the ID = " + userId + " has been found in the DB",
+                        ErrorCodes.USER_NOT_FOUND)
+                );
+        user.is
+
+    }
+
     private void validate(ChangePasswordUserDto dto) {
         if (dto == null) {
             log.warn("Impossible to modify the password with a null object");

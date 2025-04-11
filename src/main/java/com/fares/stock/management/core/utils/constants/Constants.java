@@ -22,6 +22,8 @@ public interface Constants {
 
     String AUTHENTICATION_ENDPOINT = APP_ROOT + "/auth";
 
+    String ACCOUNTS_ENDPOINT = APP_ROOT + "/accounts/management";
+
 
 }
 

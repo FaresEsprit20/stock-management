@@ -15,7 +15,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
-
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,7 +55,8 @@ public class User extends AbstractEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
-
+    @Column(name = "locked")
+    private boolean locked;
 
     // Required UserDetails methods
     @Override
@@ -71,7 +71,7 @@ public class User extends AbstractEntity implements UserDetails {
 
     // Account status flags (customize as needed)
     @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isAccountNonLocked() {return !locked;}
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return true; }
 

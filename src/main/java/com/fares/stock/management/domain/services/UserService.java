@@ -19,5 +19,7 @@ public interface UserService {
 
     UserDto changePassword(ChangePasswordUserDto dto);
 
+    UserDto toggleLock(Integer userId);
+
 
 }
